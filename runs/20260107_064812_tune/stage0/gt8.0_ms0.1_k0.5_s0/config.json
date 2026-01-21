@@ -1,0 +1,20 @@
+{
+  "name": "gt8.0_ms0.1_k0.5_s0",
+  "mode": "harm",
+  "seed": 0,
+  "vocab": 256,
+  "d": 128,
+  "layers": 96,
+  "n": 16,
+  "steps": 1200,
+  "batch": 8,
+  "seq": 256,
+  "lr": 0.002,
+  "num_kv_pairs": 8,
+  "gain_target": 8.0,
+  "min_scale": 0.1,
+  "harm_k": 0.5,
+  "beta": 0.95,
+  "log_every": 200,
+  "device": "cuda"
+}

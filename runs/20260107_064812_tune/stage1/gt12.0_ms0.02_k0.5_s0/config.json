@@ -1,0 +1,20 @@
+{
+  "name": "gt12.0_ms0.02_k0.5_s0",
+  "mode": "harm",
+  "seed": 0,
+  "vocab": 256,
+  "d": 128,
+  "layers": 96,
+  "n": 16,
+  "steps": 3000,
+  "batch": 8,
+  "seq": 256,
+  "lr": 0.002,
+  "num_kv_pairs": 8,
+  "gain_target": 12.0,
+  "min_scale": 0.02,
+  "harm_k": 0.5,
+  "beta": 0.95,
+  "log_every": 100,
+  "device": "cuda"
+}

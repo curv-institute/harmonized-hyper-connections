@@ -1,0 +1,72 @@
+[
+  {
+    "run_name": "A2_hc_15k",
+    "mode": "hc",
+    "seed": 0,
+    "gain_target": 2.5,
+    "final_loss": 3.805461883544922,
+    "final_acc": 0.125,
+    "max_gain": 395.6148986816406,
+    "time_sec": 10749.761588267982
+  },
+  {
+    "run_name": "harm_t5_s0",
+    "mode": "harm",
+    "seed": 0,
+    "gain_target": 5.0,
+    "final_loss": 4.760675430297852,
+    "final_acc": 0.015625,
+    "max_gain": 3.1333494186401367,
+    "time_sec": 2298.536624692846
+  },
+  {
+    "run_name": "harm_t5_s1",
+    "mode": "harm",
+    "seed": 1,
+    "gain_target": 5.0,
+    "final_loss": 4.860287189483643,
+    "final_acc": 0.0,
+    "max_gain": 4.987733364105225,
+    "time_sec": 2315.3062259829603
+  },
+  {
+    "run_name": "harm_t5_s2",
+    "mode": "harm",
+    "seed": 2,
+    "gain_target": 5.0,
+    "final_loss": 4.859102249145508,
+    "final_acc": 0.015625,
+    "max_gain": 3.1671061515808105,
+    "time_sec": 2318.0036418610252
+  },
+  {
+    "run_name": "harm_t8_s0",
+    "mode": "harm",
+    "seed": 0,
+    "gain_target": 8.0,
+    "final_loss": 4.691300392150879,
+    "final_acc": 0.0625,
+    "max_gain": 8.567056655883789,
+    "time_sec": 2317.943348842906
+  },
+  {
+    "run_name": "harm_t8_s1",
+    "mode": "harm",
+    "seed": 1,
+    "gain_target": 8.0,
+    "final_loss": 4.881692886352539,
+    "final_acc": 0.0,
+    "max_gain": 8.874276161193848,
+    "time_sec": 2320.85240828502
+  },
+  {
+    "run_name": "harm_t8_s2",
+    "mode": "harm",
+    "seed": 2,
+    "gain_target": 8.0,
+    "final_loss": 4.8509440422058105,
+    "final_acc": 0.015625,
+    "max_gain": 7.839872360229492,
+    "time_sec": 2021.6311805380974
+  }
+]

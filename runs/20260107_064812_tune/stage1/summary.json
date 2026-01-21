@@ -1,0 +1,166 @@
+{
+  "all": [
+    {
+      "gain_target": 12.0,
+      "min_scale": 0.02,
+      "harm_k": 0.5,
+      "beta": 0.95,
+      "seeds": [
+        0,
+        1
+      ],
+      "n_seeds": 2,
+      "acc_mean": 0.046875,
+      "acc_std": 0.0,
+      "max_gain_raw_mean": 54.45989799499512,
+      "max_gain_applied_mean": 13.223739624023438,
+      "harm_scale_mean": 0.9145175226873057,
+      "harm_scale_min_mean": 0.5765213309649404,
+      "floor_hits_mean": 0.0,
+      "score_mean": 0.046875,
+      "time_sec_total": 1407.2832467930857
+    },
+    {
+      "gain_target": 12.0,
+      "min_scale": 0.05,
+      "harm_k": 0.5,
+      "beta": 0.95,
+      "seeds": [
+        0,
+        1
+      ],
+      "n_seeds": 2,
+      "acc_mean": 0.046875,
+      "acc_std": 0.0,
+      "max_gain_raw_mean": 54.45989799499512,
+      "max_gain_applied_mean": 13.223739624023438,
+      "harm_scale_mean": 0.9145175226873057,
+      "harm_scale_min_mean": 0.5765213309649404,
+      "floor_hits_mean": 0.0,
+      "score_mean": 0.046875,
+      "time_sec_total": 1383.1389056008775
+    },
+    {
+      "gain_target": 12.0,
+      "min_scale": 0.1,
+      "harm_k": 0.5,
+      "beta": 0.95,
+      "seeds": [
+        0,
+        1
+      ],
+      "n_seeds": 2,
+      "acc_mean": 0.046875,
+      "acc_std": 0.0,
+      "max_gain_raw_mean": 54.45989799499512,
+      "max_gain_applied_mean": 13.223739624023438,
+      "harm_scale_mean": 0.9145175226873057,
+      "harm_scale_min_mean": 0.5765213309649404,
+      "floor_hits_mean": 0.0,
+      "score_mean": 0.046875,
+      "time_sec_total": 1383.10992057994
+    },
+    {
+      "gain_target": 12.0,
+      "min_scale": 0.02,
+      "harm_k": 1.0,
+      "beta": 0.95,
+      "seeds": [
+        0,
+        1
+      ],
+      "n_seeds": 2,
+      "acc_mean": 0.03125,
+      "acc_std": 0.03125,
+      "max_gain_raw_mean": 53.90711498260498,
+      "max_gain_applied_mean": 12.649824142456055,
+      "harm_scale_mean": 0.931152665869369,
+      "harm_scale_min_mean": 0.6174143521447596,
+      "floor_hits_mean": 0.0,
+      "score_mean": 0.03125,
+      "time_sec_total": 1383.1307962266728
+    },
+    {
+      "gain_target": 12.0,
+      "min_scale": 0.05,
+      "harm_k": 1.0,
+      "beta": 0.95,
+      "seeds": [
+        0,
+        1
+      ],
+      "n_seeds": 2,
+      "acc_mean": 0.03125,
+      "acc_std": 0.03125,
+      "max_gain_raw_mean": 53.90711498260498,
+      "max_gain_applied_mean": 12.649824142456055,
+      "harm_scale_mean": 0.931152665869369,
+      "harm_scale_min_mean": 0.6174143521447596,
+      "floor_hits_mean": 0.0,
+      "score_mean": 0.03125,
+      "time_sec_total": 1383.1634012882132
+    },
+    {
+      "gain_target": 12.0,
+      "min_scale": 0.1,
+      "harm_k": 1.0,
+      "beta": 0.95,
+      "seeds": [
+        0,
+        1
+      ],
+      "n_seeds": 2,
+      "acc_mean": 0.03125,
+      "acc_std": 0.03125,
+      "max_gain_raw_mean": 53.90711498260498,
+      "max_gain_applied_mean": 12.649824142456055,
+      "harm_scale_mean": 0.931152665869369,
+      "harm_scale_min_mean": 0.6174143521447596,
+      "floor_hits_mean": 0.0,
+      "score_mean": 0.03125,
+      "time_sec_total": 1382.769524489995
+    }
+  ],
+  "top": [
+    {
+      "gain_target": 12.0,
+      "min_scale": 0.02,
+      "harm_k": 0.5,
+      "beta": 0.95,
+      "seeds": [
+        0,
+        1
+      ],
+      "n_seeds": 2,
+      "acc_mean": 0.046875,
+      "acc_std": 0.0,
+      "max_gain_raw_mean": 54.45989799499512,
+      "max_gain_applied_mean": 13.223739624023438,
+      "harm_scale_mean": 0.9145175226873057,
+      "harm_scale_min_mean": 0.5765213309649404,
+      "floor_hits_mean": 0.0,
+      "score_mean": 0.046875,
+      "time_sec_total": 1407.2832467930857
+    },
+    {
+      "gain_target": 12.0,
+      "min_scale": 0.05,
+      "harm_k": 0.5,
+      "beta": 0.95,
+      "seeds": [
+        0,
+        1
+      ],
+      "n_seeds": 2,
+      "acc_mean": 0.046875,
+      "acc_std": 0.0,
+      "max_gain_raw_mean": 54.45989799499512,
+      "max_gain_applied_mean": 13.223739624023438,
+      "harm_scale_mean": 0.9145175226873057,
+      "harm_scale_min_mean": 0.5765213309649404,
+      "floor_hits_mean": 0.0,
+      "score_mean": 0.046875,
+      "time_sec_total": 1383.1389056008775
+    }
+  ]
+}

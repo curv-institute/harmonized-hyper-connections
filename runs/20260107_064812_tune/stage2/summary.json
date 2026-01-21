@@ -1,0 +1,76 @@
+{
+  "best": {
+    "gain_target": 12.0,
+    "min_scale": 0.02,
+    "harm_k": 0.5,
+    "beta": 0.95,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "n_seeds": 3,
+    "acc_mean": 0.041666666666666664,
+    "acc_std": 0.00736569563735987,
+    "max_gain_raw_mean": 43.16736729939779,
+    "max_gain_applied_mean": 12.970709800720215,
+    "harm_scale_mean": 0.9357183499274991,
+    "harm_scale_min_mean": 0.6335237021629908,
+    "floor_hits_mean": 0.0,
+    "score_mean": 0.041666666666666664,
+    "time_sec_total": 2074.9707550490275
+  },
+  "runs": [
+    {
+      "run_name": "gt12.0_ms0.02_k0.5_s0",
+      "mode": "harm",
+      "seed": 0,
+      "gain_target": 12.0,
+      "min_scale": 0.02,
+      "harm_k": 0.5,
+      "final_loss": 4.697174072265625,
+      "final_acc": 0.046875,
+      "max_gain_raw_max": 49.18357467651367,
+      "max_gain_applied_max": 13.014923095703125,
+      "harm_scale_mean": 0.8802992545596627,
+      "harm_scale_min": 0.542985009604042,
+      "floor_hits": 0,
+      "time_sec": 691.6592696320731,
+      "score": 0.046875
+    },
+    {
+      "run_name": "gt12.0_ms0.02_k0.5_s1",
+      "mode": "harm",
+      "seed": 1,
+      "gain_target": 12.0,
+      "min_scale": 0.02,
+      "harm_k": 0.5,
+      "final_loss": 4.76951789855957,
+      "final_acc": 0.046875,
+      "max_gain_raw_max": 59.73622131347656,
+      "max_gain_applied_max": 13.43255615234375,
+      "harm_scale_mean": 0.9487357908149486,
+      "harm_scale_min": 0.610057652325839,
+      "floor_hits": 0,
+      "time_sec": 691.5203655469231,
+      "score": 0.046875
+    },
+    {
+      "run_name": "gt12.0_ms0.02_k0.5_s2",
+      "mode": "harm",
+      "seed": 2,
+      "gain_target": 12.0,
+      "min_scale": 0.02,
+      "harm_k": 0.5,
+      "final_loss": 4.820583343505859,
+      "final_acc": 0.03125,
+      "max_gain_raw_max": 20.582305908203125,
+      "max_gain_applied_max": 12.46465015411377,
+      "harm_scale_mean": 0.9781200044078863,
+      "harm_scale_min": 0.7475284445590914,
+      "floor_hits": 0,
+      "time_sec": 691.7911198700313,
+      "score": 0.03125
+    }
+  ]
+}

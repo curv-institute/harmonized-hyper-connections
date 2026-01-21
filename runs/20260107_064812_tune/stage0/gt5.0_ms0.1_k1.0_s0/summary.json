@@ -1,0 +1,16 @@
+{
+  "run_name": "gt5.0_ms0.1_k1.0_s0",
+  "mode": "harm",
+  "seed": 0,
+  "gain_target": 5.0,
+  "min_scale": 0.1,
+  "harm_k": 1.0,
+  "final_loss": 4.849542617797852,
+  "final_acc": 0.015625,
+  "max_gain_raw_max": 147.79385375976562,
+  "max_gain_applied_max": 5.054339408874512,
+  "harm_scale_mean": 0.6248049284548415,
+  "harm_scale_min": 0.32384941280484086,
+  "floor_hits": 0,
+  "time_sec": 276.7608000340406
+}

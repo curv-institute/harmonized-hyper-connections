@@ -1,0 +1,16 @@
+{
+  "run_name": "gt8.0_ms0.05_k1.0_s0",
+  "mode": "harm",
+  "seed": 0,
+  "gain_target": 8.0,
+  "min_scale": 0.05,
+  "harm_k": 1.0,
+  "final_loss": 4.884937763214111,
+  "final_acc": 0.0,
+  "max_gain_raw_max": 6.694873332977295,
+  "max_gain_applied_max": 6.694873332977295,
+  "harm_scale_mean": 1.0,
+  "harm_scale_min": 1.0,
+  "floor_hits": 0,
+  "time_sec": 276.71953098499216
+}
