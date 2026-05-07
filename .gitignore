@@ -1,3 +1,7 @@
 __pycache__/
 *.pyc
 *.log
+!runs/**/*.log
+.venv/
+.pytest_cache/
+.ruff_cache/

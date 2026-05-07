@@ -15,10 +15,15 @@ import argparse
 import csv
 import json
 import math
+import os
+import platform
 import random
+import statistics
+import subprocess
+import sys
 import time
 from dataclasses import dataclass, asdict, field
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 
@@ -26,12 +31,137 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+try:
+    import numpy as np
+except ImportError:  # pragma: no cover - numpy is declared in pyproject for normal use.
+    np = None
+
 
 def set_seed(seed: int = 0) -> None:
     random.seed(seed)
+    if np is not None:
+        np.random.seed(seed)
     torch.manual_seed(seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.benchmark = False
+    torch.backends.cudnn.deterministic = True
+
+
+def git_commit_sha() -> Optional[str]:
+    try:
+        return subprocess.check_output(
+            ["git", "rev-parse", "HEAD"],
+            text=True,
+            stderr=subprocess.DEVNULL,
+        ).strip()
+    except Exception:
+        return None
+
+
+def resolve_device(requested: str) -> str:
+    if requested == "auto":
+        return "cuda" if torch.cuda.is_available() else "cpu"
+    if requested == "cuda" and not torch.cuda.is_available():
+        raise RuntimeError("--device cuda requested, but torch.cuda.is_available() is false")
+    return requested
+
+
+def command_line() -> str:
+    return " ".join([Path(sys.executable).name, *sys.argv])
+
+
+def device_description(device: str) -> str:
+    if device == "cuda" and torch.cuda.is_available():
+        idx = torch.cuda.current_device()
+        return f"cuda:{idx} {torch.cuda.get_device_name(idx)}"
+    return device
+
+
+def sha256_file(path: Path) -> str:
+    import hashlib
+
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(1024 * 1024), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def write_run_manifest(out_dir: Path, cfg: "RunConfig", summary: Dict[str, object]) -> None:
+    files = []
+    for name in ["config.json", "command.txt", "metrics.csv", "summary.json", "stdout.log", "stderr.log"]:
+        path = out_dir / name
+        if path.exists():
+            files.append({
+                "path": str(path),
+                "bytes": path.stat().st_size,
+                "sha256": sha256_file(path),
+            })
+
+    manifest = {
+        "run_name": cfg.name,
+        "mode": cfg.mode,
+        "seed": cfg.seed,
+        "steps": cfg.steps,
+        "created_utc": datetime.now(timezone.utc).isoformat(),
+        "command": (out_dir / "command.txt").read_text().strip()
+        if (out_dir / "command.txt").exists()
+        else command_line(),
+        "hostname": platform.node(),
+        "python": platform.python_version(),
+        "torch": torch.__version__,
+        "cuda_available": torch.cuda.is_available(),
+        "device": summary.get("device"),
+        "commit_sha": summary.get("commit_sha"),
+        "files": files,
+    }
+    with open(out_dir / "manifest.json", "w") as f:
+        json.dump(manifest, f, indent=2)
+
+
+def write_failure_summary(out_dir: Path, cfg: "RunConfig", exc: BaseException, runtime_seconds: float) -> Dict[str, object]:
+    out_dir.mkdir(parents=True, exist_ok=True)
+    command_file = out_dir / "command.txt"
+    if not command_file.exists():
+        command_file.write_text(command_line() + "\n")
+    config_file = out_dir / "config.json"
+    if not config_file.exists():
+        with open(config_file, "w") as f:
+            json.dump(asdict(cfg), f, indent=2)
+
+    summary: Dict[str, object] = {
+        "run_name": cfg.name,
+        "mode": cfg.mode,
+        "seed": cfg.seed,
+        "steps": cfg.steps,
+        "completed_steps": 0,
+        "gain_target": cfg.gain_target,
+        "scale_floor": cfg.min_scale,
+        "harm_k": cfg.harm_k,
+        "final_accuracy": None,
+        "final_loss": None,
+        "max_raw_gain": None,
+        "max_applied_gain": None,
+        "mean_applied_gain": None,
+        "std_applied_gain": None,
+        "min_scale": None,
+        "mean_scale": None,
+        "floor_hits": None,
+        "runtime_seconds": runtime_seconds,
+        "device": cfg.device,
+        "hostname": platform.node(),
+        "commit_sha": git_commit_sha(),
+        "python": platform.python_version(),
+        "torch": torch.__version__,
+        "status": "failed",
+        "error_type": type(exc).__name__,
+        "error_message": str(exc),
+    }
+    with open(out_dir / "summary.json", "w") as f:
+        json.dump(summary, f, indent=2)
+    write_run_manifest(out_dir, cfg, summary)
+    return summary
 
 
 def sinkhorn_doubly_stochastic(logits: torch.Tensor, iters: int = 6, eps: float = 1e-6) -> torch.Tensor:
@@ -262,8 +392,10 @@ class RunConfig:
     batch: int = 8
     seq: int = 256
     lr: float = 2e-3
+    weight_decay: float = 0.01
 
     # Task
+    task: str = "kv_retrieval"
     num_kv_pairs: int = 8
 
     # Harmonizer
@@ -274,7 +406,7 @@ class RunConfig:
 
     # Logging
     log_every: int = 100
-    device: str = "cuda"
+    device: str = "auto"
 
 
 def make_kv_batch(cfg: RunConfig) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
@@ -282,9 +414,11 @@ def make_kv_batch(cfg: RunConfig) -> Tuple[torch.Tensor, torch.Tensor, torch.Ten
     device = cfg.device
     B, T = cfg.batch, cfg.seq
     num_kv = cfg.num_kv_pairs
+    key_vocab = max(1, cfg.vocab // 2)
+    value_vocab = max(1, cfg.vocab - key_vocab)
 
-    keys = torch.randint(0, 128, (B, num_kv), device=device)
-    values = torch.randint(128, 256, (B, num_kv), device=device)
+    keys = torch.randint(0, key_vocab, (B, num_kv), device=device)
+    values = key_vocab + torch.randint(0, value_vocab, (B, num_kv), device=device)
 
     x = torch.zeros(B, T, dtype=torch.long, device=device)
     y = torch.zeros(B, T, dtype=torch.long, device=device)
@@ -308,9 +442,14 @@ def make_kv_batch(cfg: RunConfig) -> Tuple[torch.Tensor, torch.Tensor, torch.Ten
 
 def train(cfg: RunConfig, out_dir: Path) -> Dict:
     """Train model and return results."""
+    cfg.device = resolve_device(cfg.device)
     set_seed(cfg.seed)
 
     out_dir.mkdir(parents=True, exist_ok=True)
+
+    command_file = out_dir / "command.txt"
+    if not command_file.exists():
+        command_file.write_text(command_line() + "\n")
 
     # Save config
     with open(out_dir / "config.json", "w") as f:
@@ -324,12 +463,13 @@ def train(cfg: RunConfig, out_dir: Path) -> Dict:
         beta=cfg.beta,
     )
     model = TinyLM(cfg.vocab, cfg.d, cfg.layers, cfg.n, cfg.mode, harm_cfg).to(cfg.device)
-    opt = torch.optim.AdamW(model.parameters(), lr=cfg.lr, weight_decay=0.01)
+    opt = torch.optim.AdamW(model.parameters(), lr=cfg.lr, weight_decay=cfg.weight_decay)
 
     # Metrics CSV
     metrics_file = out_dir / "metrics.csv"
     fieldnames = [
-        "step", "loss", "acc",
+        "step", "loss", "accuracy", "raw_gain", "applied_gain", "scale", "mode", "seed",
+        "acc",
         "gain_raw_row", "gain_raw_col", "gain_raw_max",
         "gain_applied_row", "gain_applied_col", "gain_applied_max",
         "harm_scale", "floor_hits", "wall_time_sec"
@@ -368,6 +508,12 @@ def train(cfg: RunConfig, out_dir: Path) -> Dict:
                 entry = {
                     "step": step,
                     "loss": float(loss.item()),
+                    "accuracy": acc,
+                    "raw_gain": metrics["G_raw_max"],
+                    "applied_gain": metrics["G_applied_max"],
+                    "scale": metrics["harm_scale"],
+                    "mode": cfg.mode,
+                    "seed": cfg.seed,
                     "acc": acc,
                     "gain_raw_row": metrics["G_raw_row"],
                     "gain_raw_col": metrics["G_raw_col"],
@@ -396,20 +542,43 @@ def train(cfg: RunConfig, out_dir: Path) -> Dict:
     elapsed = time.perf_counter() - t0
 
     # Compute summary stats
+    applied_gain_values = [float(e["applied_gain"]) for e in logs]
+    raw_gain_values = [float(e["raw_gain"]) for e in logs]
+    scale_values = [float(e["scale"]) for e in logs]
+    final_entry = logs[-1] if logs else {}
+    device_text = device_description(cfg.device)
+    commit_sha = git_commit_sha()
     result = {
         "run_name": cfg.name,
         "mode": cfg.mode,
         "seed": cfg.seed,
+        "steps": cfg.steps,
+        "completed_steps": int(final_entry["step"]) + 1 if final_entry else 0,
         "gain_target": cfg.gain_target,
-        "min_scale": cfg.min_scale,
+        "scale_floor": cfg.min_scale,
         "harm_k": cfg.harm_k,
-        "final_loss": logs[-1]["loss"] if logs else float('nan'),
-        "final_acc": logs[-1]["acc"] if logs else float('nan'),
-        "max_gain_raw_max": max(e["gain_raw_max"] for e in logs) if logs else float('nan'),
-        "max_gain_applied_max": max(e["gain_applied_max"] for e in logs) if logs else float('nan'),
-        "harm_scale_mean": sum(harm_scale_values) / len(harm_scale_values) if harm_scale_values else float('nan'),
-        "harm_scale_min": min(harm_scale_values) if harm_scale_values else float('nan'),
-        "floor_hits": logs[-1]["floor_hits"] if logs else 0,
+        "final_accuracy": final_entry.get("accuracy", float("nan")),
+        "final_loss": final_entry.get("loss", float("nan")),
+        "max_raw_gain": max(raw_gain_values) if raw_gain_values else float("nan"),
+        "max_applied_gain": max(applied_gain_values) if applied_gain_values else float("nan"),
+        "mean_applied_gain": statistics.fmean(applied_gain_values) if applied_gain_values else float("nan"),
+        "std_applied_gain": statistics.pstdev(applied_gain_values) if len(applied_gain_values) > 1 else 0.0,
+        "min_scale": min(scale_values) if scale_values else float("nan"),
+        "mean_scale": statistics.fmean(scale_values) if scale_values else float("nan"),
+        "floor_hits": final_entry.get("floor_hits", 0),
+        "runtime_seconds": elapsed,
+        "device": device_text,
+        "hostname": platform.node(),
+        "commit_sha": commit_sha,
+        "python": platform.python_version(),
+        "torch": torch.__version__,
+        "status": "completed" if final_entry and int(final_entry["step"]) == cfg.steps - 1 else "incomplete",
+        # Backward-compatible keys used by older analysis scripts.
+        "final_acc": final_entry.get("accuracy", float("nan")),
+        "max_gain_raw_max": max(raw_gain_values) if raw_gain_values else float("nan"),
+        "max_gain_applied_max": max(applied_gain_values) if applied_gain_values else float("nan"),
+        "harm_scale_mean": statistics.fmean(scale_values) if scale_values else float("nan"),
+        "harm_scale_min": min(scale_values) if scale_values else float("nan"),
         "time_sec": elapsed,
     }
 
@@ -426,6 +595,8 @@ def train(cfg: RunConfig, out_dir: Path) -> Dict:
     with open(out_dir / "summary.json", "w") as f:
         json.dump(result, f, indent=2)
 
+    write_run_manifest(out_dir, cfg, result)
+
     return result
 
 
@@ -434,20 +605,29 @@ def main():
     parser.add_argument("--mode", type=str, default="harm", choices=["hc", "mhc", "harm"])
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--steps", type=int, default=3000)
+    parser.add_argument("--batch", type=int, default=8)
+    parser.add_argument("--seq", type=int, default=256)
+    parser.add_argument("--d", type=int, default=128)
+    parser.add_argument("--layers", type=int, default=96)
+    parser.add_argument("--n", type=int, default=16)
+    parser.add_argument("--lr", type=float, default=2e-3)
+    parser.add_argument("--weight-decay", "--weight_decay", dest="weight_decay", type=float, default=0.01)
+    parser.add_argument("--num-kv-pairs", "--num_kv_pairs", dest="num_kv_pairs", type=int, default=8)
     parser.add_argument("--gain_target", type=float, default=5.0)
     parser.add_argument("--min_scale", type=float, default=0.05)
     parser.add_argument("--harm_k", type=float, default=1.0)
     parser.add_argument("--beta", type=float, default=0.95)
-    parser.add_argument("--log_every", type=int, default=100)
-    parser.add_argument("--out", type=str, default=None, help="Output directory")
+    parser.add_argument("--log-every", "--log_every", dest="log_every", type=int, default=100)
+    parser.add_argument("--device", choices=["auto", "cuda", "cpu"], default="auto")
+    parser.add_argument("--out", "--out-dir", dest="out_dir", type=str, default=None, help="Output directory")
     parser.add_argument("--name", type=str, default=None, help="Run name")
     args = parser.parse_args()
 
-    device = "cuda" if torch.cuda.is_available() else "cpu"
+    device = resolve_device(args.device)
     print(f"Device: {device}")
 
-    if args.out:
-        out_dir = Path(args.out)
+    if args.out_dir:
+        out_dir = Path(args.out_dir)
     else:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         out_dir = Path.home() / "mhc" / "runs" / f"{args.mode}_{timestamp}"
@@ -458,7 +638,15 @@ def main():
         name=name,
         mode=args.mode,
         seed=args.seed,
+        d=args.d,
+        layers=args.layers,
+        n=args.n,
         steps=args.steps,
+        batch=args.batch,
+        seq=args.seq,
+        lr=args.lr,
+        weight_decay=args.weight_decay,
+        num_kv_pairs=args.num_kv_pairs,
         gain_target=args.gain_target,
         min_scale=args.min_scale,
         harm_k=args.harm_k,
@@ -470,7 +658,16 @@ def main():
     print(f"Config: {asdict(cfg)}")
     print(f"Output: {out_dir}")
 
-    result = train(cfg, out_dir)
+    t0 = time.perf_counter()
+    try:
+        result = train(cfg, out_dir)
+    except Exception as exc:
+        elapsed = time.perf_counter() - t0
+        write_failure_summary(out_dir, cfg, exc, elapsed)
+        print(f"\nRun failed: {name}")
+        print(f"  error={type(exc).__name__}: {exc}")
+        print(f"  failure artifacts saved to: {out_dir}")
+        raise
 
     print(f"\nLogs saved to: {out_dir}")
     return result
