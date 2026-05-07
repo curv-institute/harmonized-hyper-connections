@@ -47,9 +47,9 @@ AGG_METRICS = [
 ]
 
 
-def load_rows(runs_dir: Path, prefix: str, allow_failed: bool) -> list[dict[str, object]]:
+def load_rows(runs_dir: Path, prefix: str, modes: list[str], allow_failed: bool) -> list[dict[str, object]]:
     rows = []
-    for mode in MODES:
+    for mode in modes:
         for seed in SEEDS:
             run_dir = runs_dir / f"{prefix}_{mode}_seed{seed}"
             with open(run_dir / "summary.json") as f:
@@ -71,8 +71,8 @@ def write_csv(rows: list[dict[str, object]], path: Path) -> None:
         writer.writerows(rows)
 
 
-def write_aggregate_csv(rows: list[dict[str, object]], path: Path) -> None:
-    aggs = aggregate_rows(rows)
+def write_aggregate_csv(rows: list[dict[str, object]], path: Path, modes: list[str]) -> None:
+    aggs = aggregate_rows(rows, modes)
     fieldnames = ["mode", "n"]
     for metric in AGG_METRICS:
         for suffix in ("mean", "std", "min", "max"):
@@ -100,9 +100,9 @@ def markdown_table(headers: list[str], rows: list[list[object]]) -> str:
     return "\n".join(out)
 
 
-def aggregate_rows(rows: list[dict[str, object]]) -> list[dict[str, object]]:
+def aggregate_rows(rows: list[dict[str, object]], modes: list[str]) -> list[dict[str, object]]:
     aggs = []
-    for mode in MODES:
+    for mode in modes:
         mode_rows = [r for r in rows if r["mode"] == mode and r.get("status") != "failed"]
         agg: dict[str, object] = {"mode": mode, "n": len(mode_rows)}
         if not mode_rows:
@@ -117,7 +117,7 @@ def aggregate_rows(rows: list[dict[str, object]]) -> list[dict[str, object]]:
     return aggs
 
 
-def write_markdown(rows: list[dict[str, object]], path: Path) -> None:
+def write_markdown(rows: list[dict[str, object]], path: Path, modes: list[str]) -> None:
     seed_headers = [
         "mode",
         "seed",
@@ -132,7 +132,7 @@ def write_markdown(rows: list[dict[str, object]], path: Path) -> None:
     ]
     seed_table = markdown_table(seed_headers, [[r.get(h) for h in seed_headers] for r in rows])
 
-    aggs = aggregate_rows(rows)
+    aggs = aggregate_rows(rows, modes)
     task_headers = [
         "mode",
         "n",
@@ -190,16 +190,17 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--runs-dir", type=Path, default=Path("runs"))
     parser.add_argument("--prefix", default="pub15k")
+    parser.add_argument("--modes", nargs="+", default=list(MODES))
     parser.add_argument("--csv-out", type=Path, default=Path("results_summary.csv"))
     parser.add_argument("--agg-csv-out", type=Path, default=Path("results_aggregate.csv"))
     parser.add_argument("--md-out", type=Path, default=Path("results_summary.md"))
     parser.add_argument("--allow-failed", action="store_true")
     args = parser.parse_args()
 
-    rows = load_rows(args.runs_dir, args.prefix, args.allow_failed)
+    rows = load_rows(args.runs_dir, args.prefix, list(args.modes), args.allow_failed)
     write_csv(rows, args.csv_out)
-    write_aggregate_csv(rows, args.agg_csv_out)
-    write_markdown(rows, args.md_out)
+    write_aggregate_csv(rows, args.agg_csv_out, list(args.modes))
+    write_markdown(rows, args.md_out, list(args.modes))
     print(f"Wrote {args.csv_out}")
     print(f"Wrote {args.agg_csv_out}")
     print(f"Wrote {args.md_out}")

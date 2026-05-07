@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-MODES=(hc mhc harm)
+MODES=(hc mhc harm res_scale)
 SEEDS=(0 1 2)
 STEPS="${STEPS:-15000}"
 LOG_EVERY="${LOG_EVERY:-500}"
@@ -10,6 +10,7 @@ GAIN_TARGET="${GAIN_TARGET:-12.0}"
 MIN_SCALE="${MIN_SCALE:-0.02}"
 HARM_K="${HARM_K:-0.5}"
 BETA="${BETA:-0.95}"
+RESIDUAL_SCALE="${RESIDUAL_SCALE:-0.25}"
 EXECUTION_MODE="${EXECUTION_MODE:-local}"
 LOCAL_UV="${LOCAL_UV:-uv}"
 REMOTE_UV="${REMOTE_UV:-/home/jwm/.local/bin/uv}"
@@ -24,7 +25,7 @@ run_local() {
   local seed="$2"
   local out="runs/pub15k_${mode}_seed${seed}"
   mkdir -p "${out}"
-  local cmd="CUDA_VISIBLE_DEVICES=${LOCAL_GPU} ${LOCAL_UV} run python harmonizer_applied_gain.py --mode ${mode} --steps ${STEPS} --seed ${seed} --out-dir ${out} --device ${DEVICE} --log-every ${LOG_EVERY} --gain_target ${GAIN_TARGET} --min_scale ${MIN_SCALE} --harm_k ${HARM_K} --beta ${BETA}"
+  local cmd="CUDA_VISIBLE_DEVICES=${LOCAL_GPU} ${LOCAL_UV} run python harmonizer_applied_gain.py --mode ${mode} --steps ${STEPS} --seed ${seed} --out-dir ${out} --device ${DEVICE} --log-every ${LOG_EVERY} --gain_target ${GAIN_TARGET} --min_scale ${MIN_SCALE} --harm_k ${HARM_K} --beta ${BETA} --residual-scale ${RESIDUAL_SCALE}"
   printf '%s\n' "${cmd}" > "${out}/command.txt"
   echo "Running local ${out}"
   bash -lc "${cmd}" > "${out}/stdout.log" 2> "${out}/stderr.log"
@@ -35,7 +36,7 @@ run_remote() {
   local seed="$2"
   local out="runs/pub15k_${mode}_seed${seed}"
   mkdir -p "${out}"
-  local remote_inner="cd /gfs/git/harmonized-hyper-connections && CUDA_VISIBLE_DEVICES=${REMOTE_GPU} UV_PROJECT_ENVIRONMENT=${REMOTE_ENV} ${REMOTE_UV} run python harmonizer_applied_gain.py --mode ${mode} --steps ${STEPS} --seed ${seed} --out-dir ${out} --device ${DEVICE} --log-every ${LOG_EVERY} --gain_target ${GAIN_TARGET} --min_scale ${MIN_SCALE} --harm_k ${HARM_K} --beta ${BETA}"
+  local remote_inner="cd /gfs/git/harmonized-hyper-connections && CUDA_VISIBLE_DEVICES=${REMOTE_GPU} UV_PROJECT_ENVIRONMENT=${REMOTE_ENV} ${REMOTE_UV} run python harmonizer_applied_gain.py --mode ${mode} --steps ${STEPS} --seed ${seed} --out-dir ${out} --device ${DEVICE} --log-every ${LOG_EVERY} --gain_target ${GAIN_TARGET} --min_scale ${MIN_SCALE} --harm_k ${HARM_K} --beta ${BETA} --residual-scale ${RESIDUAL_SCALE}"
   local cmd="ssh gx10-e313 '${remote_inner}'"
   printf '%s\n' "${cmd}" > "${out}/command.txt"
   echo "Running remote ${out}"
@@ -104,4 +105,4 @@ else
   done
 fi
 
-"${LOCAL_UV}" run python scripts/validate_artifacts.py --prefix pub15k --steps "${STEPS}"
+"${LOCAL_UV}" run python scripts/validate_artifacts.py --prefix pub15k --steps "${STEPS}" --modes "${MODES[@]}"

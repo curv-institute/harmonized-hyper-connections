@@ -15,6 +15,18 @@ def test_applied_gain_scaling_moves_transport_toward_identity():
     assert torch.linalg.vector_norm(scaled - identity) < torch.linalg.vector_norm(raw - identity)
 
 
+def test_fixed_residual_scale_baseline_moves_transport_toward_identity():
+    block = StreamResidualBlock(d=4, n=3, mode="res_scale", residual_scale=0.25)
+    with torch.no_grad():
+        block.hres_logits.fill_(4.0)
+
+    raw = block.hres_raw()
+    _, _, scaled = block.mappings()
+    identity = torch.eye(3)
+
+    assert torch.linalg.vector_norm(scaled - identity) < torch.linalg.vector_norm(raw - identity)
+
+
 def test_harmonizer_reduces_scale_under_large_raw_transport():
     cfg = HarmonizerConfig(gain_target=2.0, min_scale=1e-4, harm_k=1.0, beta=0.5)
     model = TinyLM(vocab=16, d=8, layers=3, n=3, mode="harm", harm_cfg=cfg)

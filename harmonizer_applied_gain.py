@@ -9,6 +9,7 @@ Modes:
 - hc: Unconstrained residual transport
 - mhc: Hard manifold projection via Sinkhorn
 - harm: Soft equilibrium via applied-gain feedback control
+- res_scale: Fixed residual-transport scaling baseline
 """
 
 import argparse
@@ -140,6 +141,7 @@ def write_failure_summary(out_dir: Path, cfg: "RunConfig", exc: BaseException, r
         "gain_target": cfg.gain_target,
         "scale_floor": cfg.min_scale,
         "harm_k": cfg.harm_k,
+        "residual_scale": cfg.residual_scale,
         "final_accuracy": None,
         "final_loss": None,
         "max_raw_gain": None,
@@ -229,11 +231,12 @@ class CoreBlock(nn.Module):
 
 class StreamResidualBlock(nn.Module):
     """Multi-stream residual block with configurable transport constraint."""
-    def __init__(self, d: int, n: int, mode: str):
+    def __init__(self, d: int, n: int, mode: str, residual_scale: float = 1.0):
         super().__init__()
-        assert mode in ("hc", "mhc", "harm")
+        assert mode in ("hc", "mhc", "harm", "res_scale")
         self.n = n
         self.mode = mode
+        self.residual_scale = residual_scale
         self.hpre_logits = nn.Parameter(torch.zeros(n))
         self.hpost_logits = nn.Parameter(torch.zeros(n))
         self.hres_logits = nn.Parameter(torch.zeros(n, n))
@@ -265,6 +268,10 @@ class StreamResidualBlock(nn.Module):
             raw = I + 0.05 * self.hres_logits
             s = torch.tensor(harm_scale, device=raw.device, dtype=raw.dtype)
             hres = I + s * (raw - I)
+        elif self.mode == "res_scale":
+            raw = I + 0.05 * self.hres_logits
+            s = torch.tensor(self.residual_scale, device=raw.device, dtype=raw.dtype)
+            hres = I + s * (raw - I)
         else:  # hc
             hres = I + 0.05 * self.hres_logits
         return hpre, hpost, hres
@@ -290,14 +297,15 @@ class HarmonizerConfig:
 class TinyLM(nn.Module):
     """Language model with multi-stream residual transport."""
     def __init__(self, vocab: int, d: int, layers: int, n: int, mode: str,
-                 harm_cfg: Optional[HarmonizerConfig] = None):
+                 harm_cfg: Optional[HarmonizerConfig] = None, residual_scale: float = 1.0):
         super().__init__()
         self.emb = nn.Embedding(vocab, d)
-        self.blocks = nn.ModuleList([StreamResidualBlock(d, n, mode) for _ in range(layers)])
+        self.blocks = nn.ModuleList([StreamResidualBlock(d, n, mode, residual_scale) for _ in range(layers)])
         self.ln_f = nn.LayerNorm(d)
         self.head = nn.Linear(d, vocab, bias=False)
         self.n = n
         self.mode = mode
+        self.residual_scale = residual_scale
 
         # Harmonizer state
         self.harm_cfg = harm_cfg or HarmonizerConfig()
@@ -404,6 +412,7 @@ class RunConfig:
     min_scale: float = 0.05
     harm_k: float = 1.0
     beta: float = 0.95
+    residual_scale: float = 0.25
 
     # Logging
     log_every: int = 100
@@ -463,7 +472,15 @@ def train(cfg: RunConfig, out_dir: Path) -> Dict:
         harm_k=cfg.harm_k,
         beta=cfg.beta,
     )
-    model = TinyLM(cfg.vocab, cfg.d, cfg.layers, cfg.n, cfg.mode, harm_cfg).to(cfg.device)
+    model = TinyLM(
+        cfg.vocab,
+        cfg.d,
+        cfg.layers,
+        cfg.n,
+        cfg.mode,
+        harm_cfg,
+        residual_scale=cfg.residual_scale,
+    ).to(cfg.device)
     opt = torch.optim.AdamW(model.parameters(), lr=cfg.lr, weight_decay=cfg.weight_decay)
 
     # Metrics CSV
@@ -558,6 +575,7 @@ def train(cfg: RunConfig, out_dir: Path) -> Dict:
         "gain_target": cfg.gain_target,
         "scale_floor": cfg.min_scale,
         "harm_k": cfg.harm_k,
+        "residual_scale": cfg.residual_scale,
         "final_accuracy": final_entry.get("accuracy", float("nan")),
         "final_loss": final_entry.get("loss", float("nan")),
         "max_raw_gain": max(raw_gain_values) if raw_gain_values else float("nan"),
@@ -603,11 +621,12 @@ def train(cfg: RunConfig, out_dir: Path) -> Dict:
 
 def main():
     parser = argparse.ArgumentParser(description="Harmonizer with Applied-Gain Control")
-    parser.add_argument("--mode", type=str, default="harm", choices=["hc", "mhc", "harm"])
+    parser.add_argument("--mode", type=str, default="harm", choices=["hc", "mhc", "harm", "res_scale"])
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--steps", type=int, default=3000)
     parser.add_argument("--batch", type=int, default=8)
     parser.add_argument("--seq", type=int, default=256)
+    parser.add_argument("--vocab", type=int, default=256)
     parser.add_argument("--d", type=int, default=128)
     parser.add_argument("--layers", type=int, default=96)
     parser.add_argument("--n", type=int, default=16)
@@ -618,6 +637,7 @@ def main():
     parser.add_argument("--min_scale", type=float, default=0.05)
     parser.add_argument("--harm_k", type=float, default=1.0)
     parser.add_argument("--beta", type=float, default=0.95)
+    parser.add_argument("--residual-scale", "--residual_scale", dest="residual_scale", type=float, default=0.25)
     parser.add_argument("--log-every", "--log_every", dest="log_every", type=int, default=100)
     parser.add_argument("--device", choices=["auto", "cuda", "cpu"], default="auto")
     parser.add_argument("--out", "--out-dir", dest="out_dir", type=str, default=None, help="Output directory")
@@ -639,6 +659,7 @@ def main():
         name=name,
         mode=args.mode,
         seed=args.seed,
+        vocab=args.vocab,
         d=args.d,
         layers=args.layers,
         n=args.n,
@@ -652,6 +673,7 @@ def main():
         min_scale=args.min_scale,
         harm_k=args.harm_k,
         beta=args.beta,
+        residual_scale=args.residual_scale,
         log_every=args.log_every,
         device=device,
     )

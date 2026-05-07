@@ -12,8 +12,8 @@ import pandas as pd
 
 MODES = ("hc", "mhc", "harm")
 SEEDS = (0, 1, 2)
-MODE_LABELS = {"hc": "HC", "mhc": "mHC", "harm": "Harmonizer"}
-MODE_COLORS = {"hc": "#4C78A8", "mhc": "#F58518", "harm": "#54A24B"}
+MODE_LABELS = {"hc": "HC", "mhc": "mHC", "harm": "Harmonizer", "res_scale": "Residual scale"}
+MODE_COLORS = {"hc": "#4C78A8", "mhc": "#F58518", "harm": "#54A24B", "res_scale": "#B279A2"}
 
 
 def load_metrics(runs_dir: Path, prefix: str) -> pd.DataFrame:
@@ -108,12 +108,15 @@ def plot_seed_robustness(runs_dir: Path, prefix: str, out: Path) -> None:
 
 
 def main() -> int:
+    global MODES
     parser = argparse.ArgumentParser()
     parser.add_argument("--runs-dir", type=Path, default=Path("runs"))
     parser.add_argument("--prefix", default="pub15k")
+    parser.add_argument("--modes", nargs="+", default=list(MODES))
     parser.add_argument("--outdir", type=Path, default=Path("paper_figs"))
     args = parser.parse_args()
 
+    MODES = tuple(args.modes)
     args.outdir.mkdir(parents=True, exist_ok=True)
     df = load_metrics(args.runs_dir, args.prefix)
 

@@ -11,7 +11,7 @@ SUMMARY_SCHEMA = {
     "type": "object",
     "required": list(REQUIRED_SUMMARY_FIELDS),
     "properties": {
-        "mode": {"enum": ["hc", "mhc", "harm"]},
+        "mode": {"enum": ["hc", "mhc", "harm", "res_scale"]},
         "seed": {"type": "integer"},
         "steps": {"type": "integer", "minimum": 1},
         "final_accuracy": {"type": "number"},

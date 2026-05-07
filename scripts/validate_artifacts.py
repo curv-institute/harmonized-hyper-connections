@@ -123,7 +123,7 @@ def validate_run(run_dir: Path, mode: str, seed: int, steps: int) -> list[str]:
     return errors
 
 
-def validate_derived_outputs(root: Path, figure_dir: Path, expected_rows: int) -> list[str]:
+def validate_derived_outputs(root: Path, figure_dir: Path, modes: list[str], expected_rows: int) -> list[str]:
     errors: list[str] = []
     for name in DERIVED_TABLES:
         path = root / name
@@ -146,8 +146,8 @@ def validate_derived_outputs(root: Path, figure_dir: Path, expected_rows: int) -
     if aggregate_csv.exists():
         with open(aggregate_csv, newline="") as f:
             rows = list(csv.DictReader(f))
-        if len(rows) != len(MODES):
-            errors.append(f"{aggregate_csv}: {len(rows)} rows, expected {len(MODES)}")
+        if len(rows) != len(modes):
+            errors.append(f"{aggregate_csv}: {len(rows)} rows, expected {len(modes)}")
         required_agg_cols = ("mode", "n", "final_accuracy_mean", "final_accuracy_std")
         for col in required_agg_cols:
             if rows and col not in rows[0]:
@@ -167,6 +167,7 @@ def main() -> int:
     parser.add_argument("--runs-dir", type=Path, default=Path("runs"))
     parser.add_argument("--prefix", default="pub15k")
     parser.add_argument("--steps", type=int, default=15000)
+    parser.add_argument("--modes", nargs="+", default=list(MODES))
     parser.add_argument("--root", type=Path, default=Path("."))
     parser.add_argument("--figure-dir", type=Path, default=Path("paper_figs"))
     parser.add_argument("--check-derived", action="store_true")
@@ -179,7 +180,8 @@ def main() -> int:
 
     errors: list[str] = []
     failed = 0
-    for mode in MODES:
+    modes = list(args.modes)
+    for mode in modes:
         for seed in SEEDS:
             run_dir = args.runs_dir / f"{args.prefix}_{mode}_seed{seed}"
             run_errors = validate_run(run_dir, mode, seed, args.steps)
@@ -193,7 +195,7 @@ def main() -> int:
             errors.extend(run_errors)
 
     if args.check_derived:
-        errors.extend(validate_derived_outputs(args.root, args.figure_dir, len(MODES) * len(SEEDS)))
+        errors.extend(validate_derived_outputs(args.root, args.figure_dir, modes, len(modes) * len(SEEDS)))
 
     if errors:
         for error in errors:
