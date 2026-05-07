@@ -117,7 +117,7 @@ Acceptance:
 ## Priority 5 — Script and tooling cleanup
 
 - [x] Convert executable Python scripts to `uv`-runnable scripts or provide a proper `pyproject.toml` path.
-- [ ] Prefer PEP 723 standalone metadata for single-file experiment scripts that are intended to be run directly.
+- [x] Prefer PEP 723 standalone metadata for single-file experiment scripts that are intended to be run directly.
 - [x] Add exact reproduction commands to the README.
 - [x] Add a `scripts/validate_artifacts.py` command that checks expected run directories, summaries, tables, and figures.
 - [x] Add `.gitignore` rules that keep generated caches out while preserving intentional result artifacts.

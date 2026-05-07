@@ -1,4 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run
+# /// script
+# requires-python = ">=3.12"
+# dependencies = []
+# ///
 """Generate seed-level and aggregate result tables from run summaries."""
 
 from __future__ import annotations

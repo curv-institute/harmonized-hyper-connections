@@ -1,4 +1,10 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#   "torch>=2.11.0",
+# ]
+# ///
 """
 Focused experiments for Harmonizer paper:
 1. A2_hc_15k: Long-horizon HC drift test

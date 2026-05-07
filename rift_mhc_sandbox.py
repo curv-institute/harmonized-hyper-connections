@@ -1,9 +1,10 @@
 #!/usr/bin/env -S uv run
-#/// script
+# /// script
+# requires-python = ">=3.12"
 # dependencies = [
-#   "torch",
+#   "torch>=2.11.0",
 # ]
-#///
+# ///
 
 from __future__ import annotations
 

@@ -1,4 +1,11 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#   "matplotlib>=3.10.0",
+#   "pandas>=2.3.0",
+# ]
+# ///
 """Generate publication figures from committed run artifacts."""
 
 from __future__ import annotations

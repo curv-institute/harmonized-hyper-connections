@@ -1,4 +1,11 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#   "numpy>=2.3.0",
+#   "torch>=2.11.0",
+# ]
+# ///
 """
 Harmonizer with Applied-Gain Control
 
