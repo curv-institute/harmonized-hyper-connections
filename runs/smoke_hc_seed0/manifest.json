@@ -1,0 +1,36 @@
+{
+  "run_name": "hc_s0",
+  "mode": "hc",
+  "seed": 0,
+  "steps": 100,
+  "created_utc": "2026-05-06T21:14:41.213044+00:00",
+  "command": "python3 harmonizer_applied_gain.py --mode hc --steps 100 --seed 0 --out-dir runs/smoke_hc_seed0 --device auto --log-every 25",
+  "hostname": "dgx",
+  "python": "3.14.3",
+  "torch": "2.11.0+cu130",
+  "cuda_available": true,
+  "device": "cuda:0 NVIDIA GB10",
+  "commit_sha": "f6bdf6155b2b683c4193c698db2f70f7db849918",
+  "files": [
+    {
+      "path": "runs/smoke_hc_seed0/config.json",
+      "bytes": 350,
+      "sha256": "5e0a151e3c9585e3a8cd9a5aa124225c0eb88fd5993ed73f4f22f9c93c5d3ff4"
+    },
+    {
+      "path": "runs/smoke_hc_seed0/command.txt",
+      "bytes": 125,
+      "sha256": "79dbabe89387bede052b1d36955f1c433d5fe8d9041d9f2be2cdfd1520d8e8bd"
+    },
+    {
+      "path": "runs/smoke_hc_seed0/metrics.csv",
+      "bytes": 1259,
+      "sha256": "60f931bbf34c1b3e27aed055eac242ef18f9c79292d08bacb9b6dff3e1df05e1"
+    },
+    {
+      "path": "runs/smoke_hc_seed0/summary.json",
+      "bytes": 875,
+      "sha256": "ae6078ad75e1adc4f0e3eed77edc3902cd9005c62ede066c4ff372b501cd044e"
+    }
+  ]
+}

@@ -4,12 +4,16 @@ This backlog is scoped to turning the current Harmonized Hyper-Connections proto
 
 ## Priority 0 — Claim discipline
 
-- [ ] Split the paper claims into three explicit classes:
-  - [ ] **Claim A: gain control** — Harmonizer bounds applied composite gain even when raw composite gain drifts or explodes.
-  - [ ] **Claim B: routing preservation** — Harmonizer preserves more useful routing capacity than hard mHC projection on key-value retrieval.
-  - [ ] **Claim C: performance recovery** — Harmonizer recovers performance comparable to unconstrained HC under matched settings.
-- [ ] Add a `MANIFEST.md` mapping every paper claim to exact run directories, figure files, configs, seeds, and commit SHAs.
+- [x] Split the repository-facing claims into three explicit classes:
+  - [x] **Claim A: gain control** — Harmonizer bounds applied composite gain even when raw composite gain drifts or explodes.
+  - [x] **Claim B: routing preservation** — Harmonizer preserves more useful routing capacity than hard mHC projection on key-value retrieval.
+  - [x] **Claim C: performance recovery** — Harmonizer recovers performance comparable to unconstrained HC under matched settings.
+- [x] Add a `MANIFEST.md` mapping every paper claim to exact run directories, figure files, configs, seeds, and commit SHAs.
 - [ ] Downgrade or qualify any paper sentence that is not backed by committed artifacts.
+
+Note: no local paper source is present in this checkout. `README.md` and
+`MANIFEST.md` now split and qualify repository-facing claims; public paper text
+still needs a separate source update if it lives outside this repository.
 
 Acceptance:
 
@@ -20,12 +24,12 @@ Acceptance:
 
 Run the same task, model shape, optimizer settings, logging schema, and seed set across all three modes.
 
-- [ ] Add 15k-step runs for `hc` across at least 3 seeds.
-- [ ] Add 15k-step runs for `mhc` across at least 3 seeds.
-- [ ] Add 15k-step runs for `harm` across at least 3 seeds.
-- [ ] Record exact commands in each run directory.
-- [ ] Store each run under `runs/<timestamp>_<mode>_<seed>/` or another deterministic naming scheme.
-- [ ] Include `config.json`, `summary.json`, and per-step metrics for every run.
+- [x] Add 15k-step runs for `hc` across at least 3 seeds.
+- [x] Add 15k-step runs for `mhc` across at least 3 seeds.
+- [x] Add 15k-step runs for `harm` across at least 3 seeds.
+- [x] Record exact commands in each run directory.
+- [x] Store each run under `runs/<timestamp>_<mode>_<seed>/` or another deterministic naming scheme.
+- [x] Include `config.json`, `summary.json`, and per-step metrics for every run.
 
 Minimum metric schema:
 
@@ -52,19 +56,19 @@ Acceptance:
 
 ## Priority 2 — Summary tables and figures
 
-- [ ] Add `results_summary.csv` aggregating all publication runs.
-- [ ] Add a generated Markdown table for the paper or README.
-- [ ] Add seed-level rows, not only averages.
-- [ ] Add aggregate rows with mean, standard deviation, minimum, and maximum.
-- [ ] Generate figures from `results_summary.csv` or committed per-run metrics, not hand-entered values.
+- [x] Add `results_summary.csv` aggregating all publication runs.
+- [x] Add a generated Markdown table for the paper or README.
+- [x] Add seed-level rows, not only averages.
+- [x] Add aggregate rows with mean, standard deviation, minimum, and maximum.
+- [x] Generate figures from `results_summary.csv` or committed per-run metrics, not hand-entered values.
 
 Required figures:
 
-- [ ] Accuracy over training steps by mode.
-- [ ] Applied composite gain over training steps by mode.
-- [ ] Raw composite gain over training steps by mode.
-- [ ] Harmonizer scale over training steps.
-- [ ] Seed robustness plot or table.
+- [x] Accuracy over training steps by mode.
+- [x] Applied composite gain over training steps by mode.
+- [x] Raw composite gain over training steps by mode.
+- [x] Harmonizer scale over training steps.
+- [x] Seed robustness plot or table.
 
 Acceptance:
 
@@ -97,13 +101,13 @@ Acceptance:
 
 ## Priority 4 — Tests and invariants
 
-- [ ] Add `pyproject.toml` with project metadata and test/lint dependencies.
-- [ ] Add `pytest` tests for Sinkhorn projection behavior.
-- [ ] Add tests for composite gain calculation.
-- [ ] Add tests for applied-gain scaling.
-- [ ] Add tests that Harmonizer bounds applied gain under a synthetic exploding raw-gain case.
-- [ ] Add deterministic seed smoke tests.
-- [ ] Add JSON schema validation for run summaries.
+- [x] Add `pyproject.toml` with project metadata and test/lint dependencies.
+- [x] Add `pytest` tests for Sinkhorn projection behavior.
+- [x] Add tests for composite gain calculation.
+- [x] Add tests for applied-gain scaling.
+- [x] Add tests that Harmonizer bounds applied gain under a synthetic exploding raw-gain case.
+- [x] Add deterministic seed smoke tests.
+- [x] Add JSON schema validation for run summaries.
 
 Acceptance:
 
@@ -112,11 +116,11 @@ Acceptance:
 
 ## Priority 5 — Script and tooling cleanup
 
-- [ ] Convert executable Python scripts to `uv`-runnable scripts or provide a proper `pyproject.toml` path.
+- [x] Convert executable Python scripts to `uv`-runnable scripts or provide a proper `pyproject.toml` path.
 - [ ] Prefer PEP 723 standalone metadata for single-file experiment scripts that are intended to be run directly.
-- [ ] Add exact reproduction commands to the README.
-- [ ] Add a `scripts/validate_artifacts.py` command that checks expected run directories, summaries, tables, and figures.
-- [ ] Add `.gitignore` rules that keep generated caches out while preserving intentional result artifacts.
+- [x] Add exact reproduction commands to the README.
+- [x] Add a `scripts/validate_artifacts.py` command that checks expected run directories, summaries, tables, and figures.
+- [x] Add `.gitignore` rules that keep generated caches out while preserving intentional result artifacts.
 
 Acceptance:
 

@@ -18,6 +18,7 @@ import math
 import os
 import platform
 import random
+import shlex
 import statistics
 import subprocess
 import sys
@@ -68,7 +69,7 @@ def resolve_device(requested: str) -> str:
 
 
 def command_line() -> str:
-    return " ".join([Path(sys.executable).name, *sys.argv])
+    return shlex.join([sys.executable, *sys.argv])
 
 
 def device_description(device: str) -> str:

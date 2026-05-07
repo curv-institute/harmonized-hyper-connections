@@ -1,0 +1,7 @@
+Matching Defaults entries for jwm on gx10-e313:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty
+
+User jwm may run the following commands on gx10-e313:
+    (ALL) NOPASSWD: ALL
+    (ALL : ALL) ALL
+    (ALL) NOPASSWD: ALL

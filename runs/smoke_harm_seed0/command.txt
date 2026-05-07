@@ -1,0 +1,1 @@
+python3 harmonizer_applied_gain.py --mode harm --steps 100 --seed 0 --out-dir runs/smoke_harm_seed0 --device auto --log-every 25

@@ -4,7 +4,7 @@ set -euo pipefail
 MODES=(hc mhc harm)
 SEEDS=(0 1 2)
 STEPS="${STEPS:-15000}"
-LOG_EVERY="${LOG_EVERY:-100}"
+LOG_EVERY="${LOG_EVERY:-500}"
 DEVICE="${DEVICE:-auto}"
 GAIN_TARGET="${GAIN_TARGET:-12.0}"
 MIN_SCALE="${MIN_SCALE:-0.02}"

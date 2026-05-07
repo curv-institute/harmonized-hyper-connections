@@ -1,0 +1,46 @@
+{
+  "run_name": "harm_s2",
+  "mode": "harm",
+  "seed": 2,
+  "steps": 15000,
+  "created_utc": "2026-05-07T14:13:34.163088+00:00",
+  "command": "ssh gx10-e313 'cd /gfs/git/harmonized-hyper-connections && CUDA_VISIBLE_DEVICES=0 UV_PROJECT_ENVIRONMENT=/home/jwm/.cache/harmonized-hyper-connections/.venv-gx10-e313 /home/jwm/.local/bin/uv run python harmonizer_applied_gain.py --mode harm --steps 15000 --seed 2 --out-dir runs/pub15k_harm_seed2 --device auto --log-every 500 --gain_target 12.0 --min_scale 0.02 --harm_k 0.5 --beta 0.95'",
+  "hostname": "gx10-e313",
+  "python": "3.14.3",
+  "torch": "2.11.0+cu130",
+  "cuda_available": true,
+  "device": "cuda:0 NVIDIA GB10",
+  "commit_sha": "71be6567d492762cd995ca8927cb27e637cf6645",
+  "files": [
+    {
+      "path": "runs/pub15k_harm_seed2/config.json",
+      "bytes": 358,
+      "sha256": "d30c2d83bb57c98c07a2ee0c3d3bf9869bd830b2c6fefec5cb7214b9f078c9a3"
+    },
+    {
+      "path": "runs/pub15k_harm_seed2/command.txt",
+      "bytes": 389,
+      "sha256": "cb0dbc6b4c6759a66dfe872818043b651bc65861521a4a099915c8508d511014"
+    },
+    {
+      "path": "runs/pub15k_harm_seed2/metrics.csv",
+      "bytes": 7440,
+      "sha256": "2eb5c234235f777dbd699e61af35d6bb113dda4ae12976262db91ecce37e540d"
+    },
+    {
+      "path": "runs/pub15k_harm_seed2/summary.json",
+      "bytes": 939,
+      "sha256": "11d834152a65a8ffdfc230723a77446733c0e91e77ce787020eceb8eda659b54"
+    },
+    {
+      "path": "runs/pub15k_harm_seed2/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/pub15k_harm_seed2/stderr.log",
+      "bytes": 59,
+      "sha256": "c0243ff8f378241a3951831c908a423fa2ac3beb13ec3907ebbebe24485ed315"
+    }
+  ]
+}

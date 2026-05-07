@@ -1,0 +1,46 @@
+{
+  "run_name": "harm_s1",
+  "mode": "harm",
+  "seed": 1,
+  "steps": 15000,
+  "created_utc": "2026-05-07T15:34:09.830754+00:00",
+  "command": "CUDA_VISIBLE_DEVICES=0 uv run python harmonizer_applied_gain.py --mode harm --steps 15000 --seed 1 --out-dir runs/pub15k_harm_seed1 --device auto --log-every 500 --gain_target 12.0 --min_scale 0.02 --harm_k 0.5 --beta 0.95",
+  "hostname": "dgx",
+  "python": "3.14.3",
+  "torch": "2.11.0+cu130",
+  "cuda_available": true,
+  "device": "cuda:0 NVIDIA GB10",
+  "commit_sha": "71be6567d492762cd995ca8927cb27e637cf6645",
+  "files": [
+    {
+      "path": "runs/pub15k_harm_seed1/config.json",
+      "bytes": 358,
+      "sha256": "a10d181b014a574f9e70a39a960e51f470eb2f4159dcf0805ecd7bd2771a2b1e"
+    },
+    {
+      "path": "runs/pub15k_harm_seed1/command.txt",
+      "bytes": 223,
+      "sha256": "487b71bac2a4b5bcd8e74ef883f43b139bffc7db08b27cec9a98f583e77bb57d"
+    },
+    {
+      "path": "runs/pub15k_harm_seed1/metrics.csv",
+      "bytes": 7275,
+      "sha256": "31d3a6726a65d65f42fd51538da0b46148106bb5a27cf5bf497725d0fd23a670"
+    },
+    {
+      "path": "runs/pub15k_harm_seed1/summary.json",
+      "bytes": 925,
+      "sha256": "568bf738b6cdea26806136b3599cd8449e4666e52cd5ae160f79798a1b3893fd"
+    },
+    {
+      "path": "runs/pub15k_harm_seed1/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/pub15k_harm_seed1/stderr.log",
+      "bytes": 60,
+      "sha256": "ee11860cde9574d038dea8b7e63c1c557c89c8f08076952ef46a816e2251c47a"
+    }
+  ]
+}

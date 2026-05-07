@@ -1,0 +1,6 @@
+default via 172.27.1.0 dev enP7s7 proto dhcp src 172.27.1.136 metric 102 
+172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown 
+172.18.0.0/16 dev br-8eb9621dd3a4 proto kernel scope link src 172.18.0.1 linkdown 
+172.27.0.0/16 dev enP7s7 proto kernel scope link src 172.27.1.136 metric 102 
+192.168.100.0/24 dev enp1s0f1np1 proto kernel scope link src 192.168.100.1 metric 101 
+192.168.101.0/24 dev enP2p1s0f1np1 proto kernel scope link src 192.168.101.1 metric 100 

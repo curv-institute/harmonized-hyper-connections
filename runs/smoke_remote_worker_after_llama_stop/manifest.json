@@ -1,0 +1,46 @@
+{
+  "run_name": "harm_s0",
+  "mode": "harm",
+  "seed": 0,
+  "steps": 2,
+  "created_utc": "2026-05-07T02:40:37.156743+00:00",
+  "command": "ssh gx10-e313 'cd /gfs/git/harmonized-hyper-connections && CUDA_VISIBLE_DEVICES=0 UV_PROJECT_ENVIRONMENT=/home/jwm/.cache/harmonized-hyper-connections/.venv-gx10-e313 /home/jwm/.local/bin/uv run python harmonizer_applied_gain.py --mode harm --steps 2 --seed 0 --out-dir runs/smoke_remote_worker_after_llama_stop --device auto --log-every 1 --layers 2 --d 8 --n 3 --batch 2 --seq 16 --num-kv-pairs 2'",
+  "hostname": "gx10-e313",
+  "python": "3.14.3",
+  "torch": "2.11.0+cu130",
+  "cuda_available": true,
+  "device": "cuda:0 NVIDIA GB10",
+  "commit_sha": "71be6567d492762cd995ca8927cb27e637cf6645",
+  "files": [
+    {
+      "path": "runs/smoke_remote_worker_after_llama_stop/config.json",
+      "bytes": 346,
+      "sha256": "84959a81505334ff570441b339c12b7b6250d873d0188334ff860c659c17d3e9"
+    },
+    {
+      "path": "runs/smoke_remote_worker_after_llama_stop/command.txt",
+      "bytes": 400,
+      "sha256": "e0d9c773c8eb5b394c99975bfb82053f92cb534811695a52db59a7906f9e11ec"
+    },
+    {
+      "path": "runs/smoke_remote_worker_after_llama_stop/metrics.csv",
+      "bytes": 617,
+      "sha256": "f1fefd987c016ff7f54d18a0aa4b3bd593ab22e89256ff1474e9ea8ba0830abe"
+    },
+    {
+      "path": "runs/smoke_remote_worker_after_llama_stop/summary.json",
+      "bytes": 873,
+      "sha256": "142eb0317e034ca117242ce1b8d76fbf3e328fbdafe73d82103b66746c2cadd2"
+    },
+    {
+      "path": "runs/smoke_remote_worker_after_llama_stop/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/smoke_remote_worker_after_llama_stop/stderr.log",
+      "bytes": 56,
+      "sha256": "a36f5f2845e58e2d73f4df00235fcef89937472937d138674510310829b13012"
+    }
+  ]
+}

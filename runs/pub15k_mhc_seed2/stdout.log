@@ -1,0 +1,45 @@
+Device: cuda
+Config: {'name': 'mhc_s2', 'mode': 'mhc', 'seed': 2, 'vocab': 256, 'd': 128, 'layers': 96, 'n': 16, 'steps': 15000, 'batch': 8, 'seq': 256, 'lr': 0.002, 'weight_decay': 0.01, 'task': 'kv_retrieval', 'num_kv_pairs': 8, 'gain_target': 12.0, 'min_scale': 0.02, 'harm_k': 0.5, 'beta': 0.95, 'log_every': 500, 'device': 'cuda'}
+Output: runs/pub15k_mhc_seed2
+  step=    0 loss=5.7295 acc=0.0000 G_raw=1.44 G_app=1.03 scale=1.0000 floor=0
+  step=  500 loss=4.8782 acc=0.0156 G_raw=1.44 G_app=1.03 scale=1.0000 floor=0
+  step= 1000 loss=4.8989 acc=0.0000 G_raw=1.61 G_app=1.03 scale=1.0000 floor=0
+  step= 1500 loss=4.8659 acc=0.0000 G_raw=1.76 G_app=1.03 scale=1.0000 floor=0
+  step= 2000 loss=4.8326 acc=0.0000 G_raw=1.97 G_app=1.03 scale=1.0000 floor=0
+  step= 2500 loss=4.8037 acc=0.0156 G_raw=2.02 G_app=1.03 scale=1.0000 floor=0
+  step= 3000 loss=4.8646 acc=0.0000 G_raw=2.02 G_app=1.03 scale=1.0000 floor=0
+  step= 3500 loss=4.8577 acc=0.0000 G_raw=2.13 G_app=1.03 scale=1.0000 floor=0
+  step= 4000 loss=4.8630 acc=0.0156 G_raw=2.29 G_app=1.03 scale=1.0000 floor=0
+  step= 4500 loss=4.8608 acc=0.0156 G_raw=2.56 G_app=1.03 scale=1.0000 floor=0
+  step= 5000 loss=4.8403 acc=0.0000 G_raw=2.95 G_app=1.03 scale=1.0000 floor=0
+  step= 5500 loss=4.8613 acc=0.0156 G_raw=3.03 G_app=1.03 scale=1.0000 floor=0
+  step= 6000 loss=4.8605 acc=0.0000 G_raw=3.07 G_app=1.03 scale=1.0000 floor=0
+  step= 6500 loss=4.8467 acc=0.0156 G_raw=3.09 G_app=1.03 scale=1.0000 floor=0
+  step= 7000 loss=4.8553 acc=0.0000 G_raw=3.09 G_app=1.03 scale=1.0000 floor=0
+  step= 7500 loss=4.8492 acc=0.0312 G_raw=2.94 G_app=1.03 scale=1.0000 floor=0
+  step= 8000 loss=4.8401 acc=0.0000 G_raw=2.87 G_app=1.03 scale=1.0000 floor=0
+  step= 8500 loss=4.8303 acc=0.0000 G_raw=3.49 G_app=1.03 scale=1.0000 floor=0
+  step= 9000 loss=4.7936 acc=0.0312 G_raw=3.46 G_app=1.03 scale=1.0000 floor=0
+  step= 9500 loss=4.8222 acc=0.0156 G_raw=3.32 G_app=1.03 scale=1.0000 floor=0
+  step=10000 loss=4.7928 acc=0.0312 G_raw=3.67 G_app=1.03 scale=1.0000 floor=0
+  step=10500 loss=4.7961 acc=0.0312 G_raw=4.11 G_app=1.03 scale=1.0000 floor=0
+  step=11000 loss=4.7552 acc=0.0312 G_raw=4.84 G_app=1.03 scale=1.0000 floor=0
+  step=11500 loss=4.7613 acc=0.0312 G_raw=14.87 G_app=1.03 scale=1.0000 floor=0
+  step=12000 loss=4.7768 acc=0.0469 G_raw=29.17 G_app=1.03 scale=1.0000 floor=0
+  step=12500 loss=4.7231 acc=0.0469 G_raw=30.35 G_app=1.03 scale=1.0000 floor=0
+  step=13000 loss=4.7952 acc=0.0156 G_raw=28.37 G_app=1.03 scale=1.0000 floor=0
+  step=13500 loss=4.7096 acc=0.0469 G_raw=125.45 G_app=1.03 scale=1.0000 floor=0
+  step=14000 loss=4.7060 acc=0.0469 G_raw=117.57 G_app=1.03 scale=1.0000 floor=0
+  step=14500 loss=4.7720 acc=0.0156 G_raw=324.47 G_app=1.03 scale=1.0000 floor=0
+  step=14999 loss=4.6937 acc=0.0469 G_raw=415.69 G_app=1.03 scale=1.0000 floor=0
+
+============================================================
+Run complete: mhc_s2
+  final_loss=4.6937, final_acc=0.0469
+  max_gain_raw=415.69, max_gain_applied=1.03
+  harm_scale_mean=1.0000, harm_scale_min=1.0000
+  floor_hits=0, time=8596.7s
+============================================================
+
+
+Logs saved to: runs/pub15k_mhc_seed2

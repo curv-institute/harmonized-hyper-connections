@@ -1,0 +1,73 @@
+{
+  "captured_utc": "2026-05-07T14:06:35Z",
+  "nodes": [
+    {
+      "name": "dgx",
+      "ssh_target": "dgx",
+      "role": "controller_nfs_host_gfs_exporter_primary_orchestrator",
+      "ssh_reachable_from_controller": false,
+      "ssh_note": "Local node is dgx; ssh dgx probe returned host key verification failure.",
+      "management_ip": "172.27.1.136",
+      "rdma_ips": ["192.168.100.1", "192.168.101.1"],
+      "rdma_interfaces": ["enp1s0f1np1", "enP2p1s0f1np1"],
+      "rdma_state": "ACTIVE/LINK_UP for both listed interfaces",
+      "gfs_mounted": true,
+      "gfs_role": "local_exporter_source",
+      "gfs_mount_evidence": "evidence/env/gfs-df.txt",
+      "sudo_noninteractive": true,
+      "gpu_count": 1,
+      "gpu_model": "NVIDIA GB10",
+      "training_gpu_available": true,
+      "evidence_files": [
+        "evidence/env/hostname.txt",
+        "evidence/env/cluster/local-ip-brief.txt",
+        "evidence/env/cluster/local-rdma-link.txt",
+        "evidence/env/cluster/local-sudo-noninteractive.txt",
+        "evidence/env/nvidia-smi.txt",
+        "evidence/env/gfs-df.txt",
+        "evidence/env/cluster/dgx/hostname.txt",
+        "evidence/env/cluster/dgx/nvidia-smi-after-llama-stop.txt",
+        "evidence/env/cluster/dgx/docker-ps-after-llama-stop.txt",
+        "evidence/env/cluster/dgx/training-process-pub15k-harm-seed1.txt"
+      ]
+    },
+    {
+      "name": "gx10-e313",
+      "ssh_target": "gx10-e313",
+      "role": "worker_gfs_client_secondary_executor",
+      "ssh_reachable_from_controller": true,
+      "management_ip": "172.27.1.195",
+      "rdma_ips": ["192.168.100.2", "192.168.101.2"],
+      "rdma_interfaces": ["enp1s0f1np1", "enP2p1s0f1np1"],
+      "rdma_state": "ACTIVE/LINK_UP for both listed interfaces",
+      "gfs_mounted": true,
+      "gfs_role": "nfs_client",
+      "gfs_mount_evidence": "evidence/env/cluster/gx10-e313/gfs-mount.txt",
+      "sudo_noninteractive": true,
+      "gpu_count": 1,
+      "gpu_model": "NVIDIA GB10",
+      "training_gpu_available": true,
+      "training_gpu_note": "llama-server containers were stopped before the publication matrix completed; refreshed nvidia-smi evidence shows the worker running the pub15k Harmonizer seed 2 training process.",
+      "evidence_files": [
+        "evidence/env/cluster/gx10-e313/hostname.txt",
+        "evidence/env/cluster/gx10-e313/ip-brief.txt",
+        "evidence/env/cluster/gx10-e313/rdma-link.txt",
+        "evidence/env/cluster/gx10-e313/gfs-df.txt",
+        "evidence/env/cluster/gx10-e313/gfs-mount.txt",
+        "evidence/env/cluster/gx10-e313/nvidia-smi-query.txt",
+        "evidence/env/cluster/gx10-e313/sudo-noninteractive.txt",
+        "runs/smoke_remote_worker_harm_seed0/summary.json",
+        "runs/smoke_remote_worker_harm_seed0/stderr.log",
+        "evidence/env/cluster/gx10-e313/nvidia-smi-after-llama-stop.txt",
+        "evidence/env/cluster/gx10-e313/docker-ps-after-llama-stop.txt",
+        "evidence/env/cluster/gx10-e313/training-process-pub15k-harm-seed2.txt",
+        "runs/smoke_remote_worker_after_llama_stop/summary.json"
+      ]
+    }
+  ],
+  "notes": [
+    "ibstat is not installed on either node; RDMA state is recorded from rdma link.",
+    "The controller /gfs path is local storage; the worker mounts 192.168.100.1:/gfs over NFSv4.2.",
+    "Docker llama-server containers were stopped on both nodes before the final Harmonizer publication runs."
+  ]
+}

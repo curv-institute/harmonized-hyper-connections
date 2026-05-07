@@ -1,0 +1,45 @@
+Device: cuda
+Config: {'name': 'hc_s1', 'mode': 'hc', 'seed': 1, 'vocab': 256, 'd': 128, 'layers': 96, 'n': 16, 'steps': 15000, 'batch': 8, 'seq': 256, 'lr': 0.002, 'weight_decay': 0.01, 'task': 'kv_retrieval', 'num_kv_pairs': 8, 'gain_target': 12.0, 'min_scale': 0.02, 'harm_k': 0.5, 'beta': 0.95, 'log_every': 500, 'device': 'cuda'}
+Output: runs/pub15k_hc_seed1
+  step=    0 loss=5.7007 acc=0.0000 G_raw=1.47 G_app=1.47 scale=1.0000 floor=0
+  step=  500 loss=4.9363 acc=0.0000 G_raw=7.93 G_app=7.93 scale=1.0000 floor=0
+  step= 1000 loss=4.8613 acc=0.0000 G_raw=9.72 G_app=9.72 scale=1.0000 floor=0
+  step= 1500 loss=4.8505 acc=0.0156 G_raw=15.26 G_app=15.26 scale=1.0000 floor=0
+  step= 2000 loss=4.7373 acc=0.0469 G_raw=21.25 G_app=21.25 scale=1.0000 floor=0
+  step= 2500 loss=4.7985 acc=0.0625 G_raw=29.82 G_app=29.82 scale=1.0000 floor=0
+  step= 3000 loss=4.6893 acc=0.0781 G_raw=33.30 G_app=33.30 scale=1.0000 floor=0
+  step= 3500 loss=4.6722 acc=0.0781 G_raw=43.67 G_app=43.67 scale=1.0000 floor=0
+  step= 4000 loss=4.6785 acc=0.0312 G_raw=55.69 G_app=55.69 scale=1.0000 floor=0
+  step= 4500 loss=4.6297 acc=0.0625 G_raw=90.14 G_app=90.14 scale=1.0000 floor=0
+  step= 5000 loss=4.6099 acc=0.1094 G_raw=143.91 G_app=143.91 scale=1.0000 floor=0
+  step= 5500 loss=4.5362 acc=0.1250 G_raw=232.93 G_app=232.93 scale=1.0000 floor=0
+  step= 6000 loss=4.5849 acc=0.0938 G_raw=298.79 G_app=298.79 scale=1.0000 floor=0
+  step= 6500 loss=4.4904 acc=0.1250 G_raw=467.76 G_app=467.76 scale=1.0000 floor=0
+  step= 7000 loss=4.5344 acc=0.1094 G_raw=498.66 G_app=498.66 scale=1.0000 floor=0
+  step= 7500 loss=4.4032 acc=0.1250 G_raw=618.50 G_app=618.50 scale=1.0000 floor=0
+  step= 8000 loss=4.5486 acc=0.1250 G_raw=778.37 G_app=778.37 scale=1.0000 floor=0
+  step= 8500 loss=4.4959 acc=0.1094 G_raw=1059.73 G_app=1059.73 scale=1.0000 floor=0
+  step= 9000 loss=4.4932 acc=0.1094 G_raw=1480.26 G_app=1480.26 scale=1.0000 floor=0
+  step= 9500 loss=4.3961 acc=0.1250 G_raw=1752.25 G_app=1752.25 scale=1.0000 floor=0
+  step=10000 loss=4.3643 acc=0.1250 G_raw=943.36 G_app=943.36 scale=1.0000 floor=0
+  step=10500 loss=4.7291 acc=0.0469 G_raw=1575.63 G_app=1575.63 scale=1.0000 floor=0
+  step=11000 loss=4.7242 acc=0.0938 G_raw=1356.67 G_app=1356.67 scale=1.0000 floor=0
+  step=11500 loss=4.6658 acc=0.0625 G_raw=1738.37 G_app=1738.37 scale=1.0000 floor=0
+  step=12000 loss=4.6716 acc=0.0469 G_raw=1885.06 G_app=1885.06 scale=1.0000 floor=0
+  step=12500 loss=4.4606 acc=0.0938 G_raw=2709.47 G_app=2709.47 scale=1.0000 floor=0
+  step=13000 loss=4.6018 acc=0.1094 G_raw=3764.66 G_app=3764.66 scale=1.0000 floor=0
+  step=13500 loss=4.3345 acc=0.1250 G_raw=3243.53 G_app=3243.53 scale=1.0000 floor=0
+  step=14000 loss=4.2771 acc=0.1250 G_raw=2711.60 G_app=2711.60 scale=1.0000 floor=0
+  step=14500 loss=4.3278 acc=0.1094 G_raw=2966.44 G_app=2966.44 scale=1.0000 floor=0
+  step=14999 loss=4.2798 acc=0.1250 G_raw=1993.59 G_app=1993.59 scale=1.0000 floor=0
+
+============================================================
+Run complete: hc_s1
+  final_loss=4.2798, final_acc=0.1250
+  max_gain_raw=3764.66, max_gain_applied=3764.66
+  harm_scale_mean=1.0000, harm_scale_min=1.0000
+  floor_hits=0, time=15210.8s
+============================================================
+
+
+Logs saved to: runs/pub15k_hc_seed1

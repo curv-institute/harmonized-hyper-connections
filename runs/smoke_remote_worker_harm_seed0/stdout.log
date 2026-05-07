@@ -1,0 +1,15 @@
+Device: cuda
+Config: {'name': 'harm_s0', 'mode': 'harm', 'seed': 0, 'vocab': 256, 'd': 8, 'layers': 2, 'n': 3, 'steps': 2, 'batch': 2, 'seq': 16, 'lr': 0.002, 'weight_decay': 0.01, 'task': 'kv_retrieval', 'num_kv_pairs': 2, 'gain_target': 5.0, 'min_scale': 0.05, 'harm_k': 1.0, 'beta': 0.95, 'log_every': 1, 'device': 'cuda'}
+Output: runs/smoke_remote_worker_harm_seed0
+Device: cuda
+Config: {'name': 'harm_s0', 'mode': 'harm', 'seed': 0, 'vocab': 256, 'd': 8, 'layers': 2, 'n': 3, 'steps': 2, 'batch': 2, 'seq': 16, 'lr': 0.002, 'weight_decay': 0.01, 'task': 'kv_retrieval', 'num_kv_pairs': 2, 'gain_target': 5.0, 'min_scale': 0.05, 'harm_k': 1.0, 'beta': 0.95, 'log_every': 1, 'device': 'cuda'}
+Output: runs/smoke_remote_worker_harm_seed0
+
+Run failed: harm_s0
+  error=AcceleratorError: CUDA error: out of memory
+Search for `cudaErrorMemoryAllocation' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+  failure artifacts saved to: runs/smoke_remote_worker_harm_seed0

@@ -1,0 +1,70 @@
+Uninstalled 1 package in 1ms
+Installed 1 package in 3ms
+Traceback (most recent call last):
+  File "/gfs/git/harmonized-hyper-connections/harmonizer_applied_gain.py", line 624, in <module>
+    main()
+    ~~~~^^
+  File "/gfs/git/harmonized-hyper-connections/harmonizer_applied_gain.py", line 617, in main
+    result = train(cfg, out_dir)
+  File "/gfs/git/harmonized-hyper-connections/harmonizer_applied_gain.py", line 421, in train
+    model = TinyLM(cfg.vocab, cfg.d, cfg.layers, cfg.n, cfg.mode, harm_cfg).to(cfg.device)
+  File "/home/jwm/.cache/harmonized-hyper-connections/.venv-gx10-e313/lib/python3.14/site-packages/torch/nn/modules/module.py", line 1384, in to
+    return self._apply(convert)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/home/jwm/.cache/harmonized-hyper-connections/.venv-gx10-e313/lib/python3.14/site-packages/torch/nn/modules/module.py", line 934, in _apply
+    module._apply(fn)
+    ~~~~~~~~~~~~~^^^^
+  File "/home/jwm/.cache/harmonized-hyper-connections/.venv-gx10-e313/lib/python3.14/site-packages/torch/nn/modules/module.py", line 965, in _apply
+    param_applied = fn(param)
+  File "/home/jwm/.cache/harmonized-hyper-connections/.venv-gx10-e313/lib/python3.14/site-packages/torch/nn/modules/module.py", line 1370, in convert
+    return t.to(
+           ~~~~^
+        device,
+        ^^^^^^^
+        dtype if t.is_floating_point() or t.is_complex() else None,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        non_blocking,
+        ^^^^^^^^^^^^^
+    )
+    ^
+torch.AcceleratorError: CUDA error: out of memory
+Search for `cudaErrorMemoryAllocation' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+Uninstalled 1 package in 3ms
+Installed 1 package in 4ms
+Traceback (most recent call last):
+  File "/gfs/git/harmonized-hyper-connections/harmonizer_applied_gain.py", line 677, in <module>
+    main()
+    ~~~~^^
+  File "/gfs/git/harmonized-hyper-connections/harmonizer_applied_gain.py", line 663, in main
+    result = train(cfg, out_dir)
+  File "/gfs/git/harmonized-hyper-connections/harmonizer_applied_gain.py", line 465, in train
+    model = TinyLM(cfg.vocab, cfg.d, cfg.layers, cfg.n, cfg.mode, harm_cfg).to(cfg.device)
+  File "/home/jwm/.cache/harmonized-hyper-connections/.venv-gx10-e313/lib/python3.14/site-packages/torch/nn/modules/module.py", line 1384, in to
+    return self._apply(convert)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/home/jwm/.cache/harmonized-hyper-connections/.venv-gx10-e313/lib/python3.14/site-packages/torch/nn/modules/module.py", line 934, in _apply
+    module._apply(fn)
+    ~~~~~~~~~~~~~^^^^
+  File "/home/jwm/.cache/harmonized-hyper-connections/.venv-gx10-e313/lib/python3.14/site-packages/torch/nn/modules/module.py", line 965, in _apply
+    param_applied = fn(param)
+  File "/home/jwm/.cache/harmonized-hyper-connections/.venv-gx10-e313/lib/python3.14/site-packages/torch/nn/modules/module.py", line 1370, in convert
+    return t.to(
+           ~~~~^
+        device,
+        ^^^^^^^
+        dtype if t.is_floating_point() or t.is_complex() else None,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        non_blocking,
+        ^^^^^^^^^^^^^
+    )
+    ^
+torch.AcceleratorError: CUDA error: out of memory
+Search for `cudaErrorMemoryAllocation' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+

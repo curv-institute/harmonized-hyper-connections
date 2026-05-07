@@ -1,0 +1,22 @@
+{
+  "name": "mhc_s0",
+  "mode": "mhc",
+  "seed": 0,
+  "vocab": 256,
+  "d": 128,
+  "layers": 96,
+  "n": 16,
+  "steps": 100,
+  "batch": 8,
+  "seq": 256,
+  "lr": 0.002,
+  "weight_decay": 0.01,
+  "task": "kv_retrieval",
+  "num_kv_pairs": 8,
+  "gain_target": 5.0,
+  "min_scale": 0.05,
+  "harm_k": 1.0,
+  "beta": 0.95,
+  "log_every": 25,
+  "device": "cuda"
+}

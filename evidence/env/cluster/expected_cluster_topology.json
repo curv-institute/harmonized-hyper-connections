@@ -1,0 +1,26 @@
+{
+  "controller": {
+    "hostname": "dgx",
+    "ssh_target": "dgx",
+    "roles": ["controller", "nfs_host", "gfs_exporter", "primary_orchestrator"]
+  },
+  "worker": {
+    "hostname": "gx10-e313",
+    "ssh_target": "gx10-e313",
+    "roles": ["worker", "gfs_client", "secondary_executor"]
+  },
+  "storage": {
+    "shared_mount": "/gfs",
+    "exporter": "dgx",
+    "client": "gx10-e313",
+    "local_nvme_on_both_nodes": true
+  },
+  "access": {
+    "passwordless_ssh_expected": true,
+    "passwordless_sudo_expected": true
+  },
+  "network": {
+    "direct_infiniband_or_rdma_link_expected": true,
+    "rdma_ips": "discover_and_fill"
+  }
+}

@@ -1,0 +1,23 @@
+cpython-3.15.0a7-linux-aarch64-gnu                 <download available>
+cpython-3.15.0a7+freethreaded-linux-aarch64-gnu    <download available>
+cpython-3.14.3-linux-aarch64-gnu                   /home/jwm/.local/share/uv/python/cpython-3.14-linux-aarch64-gnu/bin/python3.14
+cpython-3.14.3+freethreaded-linux-aarch64-gnu      <download available>
+cpython-3.13.12-linux-aarch64-gnu                  <download available>
+cpython-3.13.12+freethreaded-linux-aarch64-gnu     <download available>
+cpython-3.12.13-linux-aarch64-gnu                  /home/jwm/.local/bin/python3.12 -> /home/jwm/.local/share/uv/python/cpython-3.12.13-linux-aarch64-gnu/bin/python3.12
+cpython-3.12.13-linux-aarch64-gnu                  /home/jwm/.local/share/uv/python/cpython-3.12-linux-aarch64-gnu/bin/python3.12
+cpython-3.12.3-linux-aarch64-gnu                   /usr/bin/python3.12
+cpython-3.12.3-linux-aarch64-gnu                   /usr/bin/python3 -> python3.12
+cpython-3.12.3-linux-aarch64-gnu                   /usr/bin/python -> python3
+cpython-3.11.15-linux-aarch64-gnu                  <download available>
+cpython-3.10.20-linux-aarch64-gnu                  /home/jwm/.local/share/uv/python/cpython-3.10-linux-aarch64-gnu/bin/python3.10
+cpython-3.9.25-linux-aarch64-gnu                   <download available>
+cpython-3.8.20-linux-aarch64-gnu                   <download available>
+pypy-3.11.15-linux-aarch64-gnu                     <download available>
+pypy-3.10.16-linux-aarch64-gnu                     <download available>
+pypy-3.9.19-linux-aarch64-gnu                      <download available>
+pypy-3.8.16-linux-aarch64-gnu                      <download available>
+graalpy-3.12.0-linux-aarch64-gnu                   <download available>
+graalpy-3.11.0-linux-aarch64-gnu                   <download available>
+graalpy-3.10.0-linux-aarch64-gnu                   <download available>
+graalpy-3.8.5-linux-aarch64-gnu                    <download available>

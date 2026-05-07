@@ -48,6 +48,18 @@ REQUIRED_METRIC_COLUMNS = (
     "mode",
     "seed",
 )
+DERIVED_TABLES = (
+    "results_summary.csv",
+    "results_aggregate.csv",
+    "results_summary.md",
+)
+DERIVED_FIGURES = (
+    "accuracy_over_steps.png",
+    "applied_gain_over_steps.png",
+    "raw_gain_over_steps.png",
+    "harmonizer_scale_over_steps.png",
+    "seed_robustness.png",
+)
 
 
 def load_json(path: Path) -> dict:
@@ -111,11 +123,53 @@ def validate_run(run_dir: Path, mode: str, seed: int, steps: int) -> list[str]:
     return errors
 
 
+def validate_derived_outputs(root: Path, figure_dir: Path, expected_rows: int) -> list[str]:
+    errors: list[str] = []
+    for name in DERIVED_TABLES:
+        path = root / name
+        if not path.exists():
+            errors.append(f"missing derived table: {path}")
+        elif path.stat().st_size == 0:
+            errors.append(f"empty derived table: {path}")
+
+    summary_csv = root / "results_summary.csv"
+    if summary_csv.exists():
+        with open(summary_csv, newline="") as f:
+            rows = list(csv.DictReader(f))
+        if len(rows) != expected_rows:
+            errors.append(f"{summary_csv}: {len(rows)} rows, expected {expected_rows}")
+        for col in REQUIRED_SUMMARY_FIELDS:
+            if rows and col not in rows[0]:
+                errors.append(f"{summary_csv}: missing column {col}")
+
+    aggregate_csv = root / "results_aggregate.csv"
+    if aggregate_csv.exists():
+        with open(aggregate_csv, newline="") as f:
+            rows = list(csv.DictReader(f))
+        if len(rows) != len(MODES):
+            errors.append(f"{aggregate_csv}: {len(rows)} rows, expected {len(MODES)}")
+        required_agg_cols = ("mode", "n", "final_accuracy_mean", "final_accuracy_std")
+        for col in required_agg_cols:
+            if rows and col not in rows[0]:
+                errors.append(f"{aggregate_csv}: missing column {col}")
+
+    for name in DERIVED_FIGURES:
+        path = figure_dir / name
+        if not path.exists():
+            errors.append(f"missing derived figure: {path}")
+        elif path.stat().st_size == 0:
+            errors.append(f"empty derived figure: {path}")
+    return errors
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--runs-dir", type=Path, default=Path("runs"))
     parser.add_argument("--prefix", default="pub15k")
     parser.add_argument("--steps", type=int, default=15000)
+    parser.add_argument("--root", type=Path, default=Path("."))
+    parser.add_argument("--figure-dir", type=Path, default=Path("paper_figs"))
+    parser.add_argument("--check-derived", action="store_true")
     parser.add_argument(
         "--allow-failed",
         action="store_true",
@@ -137,6 +191,9 @@ def main() -> int:
                     if not args.allow_failed:
                         run_errors.append(f"{summary_path}: run failed ({summary.get('error_type')})")
             errors.extend(run_errors)
+
+    if args.check_derived:
+        errors.extend(validate_derived_outputs(args.root, args.figure_dir, len(MODES) * len(SEEDS)))
 
     if errors:
         for error in errors:

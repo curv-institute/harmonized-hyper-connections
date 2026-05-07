@@ -1,0 +1,36 @@
+{
+  "run_name": "harm_s0",
+  "mode": "harm",
+  "seed": 0,
+  "steps": 100,
+  "created_utc": "2026-05-06T21:15:24.198937+00:00",
+  "command": "python3 harmonizer_applied_gain.py --mode harm --steps 100 --seed 0 --out-dir runs/smoke_harm_seed0 --device auto --log-every 25",
+  "hostname": "dgx",
+  "python": "3.14.3",
+  "torch": "2.11.0+cu130",
+  "cuda_available": true,
+  "device": "cuda:0 NVIDIA GB10",
+  "commit_sha": "f6bdf6155b2b683c4193c698db2f70f7db849918",
+  "files": [
+    {
+      "path": "runs/smoke_harm_seed0/config.json",
+      "bytes": 354,
+      "sha256": "fcb4823236c17481543fd8fb76c15fb8532d6107a935f67b7d63a5abe5390ba6"
+    },
+    {
+      "path": "runs/smoke_harm_seed0/command.txt",
+      "bytes": 129,
+      "sha256": "2e29c6d58a2cc171268331604ff1802bc1cb321bae02be9b4935752ce1c5f05f"
+    },
+    {
+      "path": "runs/smoke_harm_seed0/metrics.csv",
+      "bytes": 1267,
+      "sha256": "d573596a756682d636c392d6a3ac7fd53cabd337cc118871160f2457fb96e0f1"
+    },
+    {
+      "path": "runs/smoke_harm_seed0/summary.json",
+      "bytes": 877,
+      "sha256": "292f2eb10fd26eeb151bdd2ac5c69a15496004f0c828c06a6c191165916e09ee"
+    }
+  ]
+}

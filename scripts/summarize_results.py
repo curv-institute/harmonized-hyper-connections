@@ -71,6 +71,19 @@ def write_csv(rows: list[dict[str, object]], path: Path) -> None:
         writer.writerows(rows)
 
 
+def write_aggregate_csv(rows: list[dict[str, object]], path: Path) -> None:
+    aggs = aggregate_rows(rows)
+    fieldnames = ["mode", "n"]
+    for metric in AGG_METRICS:
+        for suffix in ("mean", "std", "min", "max"):
+            fieldnames.append(f"{metric}_{suffix}")
+
+    with open(path, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
+        writer.writeheader()
+        writer.writerows(aggs)
+
+
 def fmt(value: object) -> str:
     if isinstance(value, float):
         return f"{value:.6g}"
@@ -120,24 +133,56 @@ def write_markdown(rows: list[dict[str, object]], path: Path) -> None:
     seed_table = markdown_table(seed_headers, [[r.get(h) for h in seed_headers] for r in rows])
 
     aggs = aggregate_rows(rows)
-    agg_headers = [
+    task_headers = [
         "mode",
         "n",
         "final_accuracy_mean",
         "final_accuracy_std",
+        "final_accuracy_min",
+        "final_accuracy_max",
+        "final_loss_mean",
+        "final_loss_std",
+    ]
+    task_table = markdown_table(task_headers, [[r[h] for h in task_headers] for r in aggs])
+
+    gain_headers = [
+        "mode",
+        "n",
         "max_raw_gain_mean",
+        "max_raw_gain_std",
+        "max_raw_gain_min",
+        "max_raw_gain_max",
         "max_applied_gain_mean",
+        "max_applied_gain_std",
+        "max_applied_gain_min",
+        "max_applied_gain_max",
+    ]
+    gain_table = markdown_table(gain_headers, [[r[h] for h in gain_headers] for r in aggs])
+
+    scale_headers = [
+        "mode",
+        "n",
+        "min_scale_mean",
+        "min_scale_std",
         "min_scale_min",
+        "min_scale_max",
+        "mean_scale_mean",
+        "floor_hits_mean",
+        "floor_hits_max",
         "runtime_seconds_mean",
     ]
-    agg_table = markdown_table(agg_headers, [[r[h] for h in agg_headers] for r in aggs])
+    scale_table = markdown_table(scale_headers, [[r[h] for h in scale_headers] for r in aggs])
 
     path.write_text(
         "# Results Summary\n\n"
         "## Seed-Level Results\n\n"
         f"{seed_table}\n\n"
-        "## Aggregate Results\n\n"
-        f"{agg_table}\n"
+        "## Aggregate Task Metrics\n\n"
+        f"{task_table}\n\n"
+        "## Aggregate Gain Metrics\n\n"
+        f"{gain_table}\n\n"
+        "## Aggregate Scale and Runtime Metrics\n\n"
+        f"{scale_table}\n"
     )
 
 
@@ -146,14 +191,17 @@ def main() -> int:
     parser.add_argument("--runs-dir", type=Path, default=Path("runs"))
     parser.add_argument("--prefix", default="pub15k")
     parser.add_argument("--csv-out", type=Path, default=Path("results_summary.csv"))
+    parser.add_argument("--agg-csv-out", type=Path, default=Path("results_aggregate.csv"))
     parser.add_argument("--md-out", type=Path, default=Path("results_summary.md"))
     parser.add_argument("--allow-failed", action="store_true")
     args = parser.parse_args()
 
     rows = load_rows(args.runs_dir, args.prefix, args.allow_failed)
     write_csv(rows, args.csv_out)
+    write_aggregate_csv(rows, args.agg_csv_out)
     write_markdown(rows, args.md_out)
     print(f"Wrote {args.csv_out}")
+    print(f"Wrote {args.agg_csv_out}")
     print(f"Wrote {args.md_out}")
     return 0
 

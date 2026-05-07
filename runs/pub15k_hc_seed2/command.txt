@@ -1,0 +1,1 @@
+CUDA_VISIBLE_DEVICES=0 uv run python harmonizer_applied_gain.py --mode hc --steps 15000 --seed 2 --out-dir runs/pub15k_hc_seed2 --device auto --log-every 500 --gain_target 12.0 --min_scale 0.02 --harm_k 0.5 --beta 0.95

@@ -1,0 +1,16 @@
+Device: cuda
+Config: {'name': 'harm_s0', 'mode': 'harm', 'seed': 0, 'vocab': 256, 'd': 8, 'layers': 2, 'n': 3, 'steps': 2, 'batch': 2, 'seq': 16, 'lr': 0.002, 'weight_decay': 0.01, 'task': 'kv_retrieval', 'num_kv_pairs': 2, 'gain_target': 5.0, 'min_scale': 0.05, 'harm_k': 1.0, 'beta': 0.95, 'log_every': 1, 'device': 'cuda'}
+Output: runs/smoke_remote_worker_after_llama_stop
+  step=    0 loss=5.6571 acc=0.0000 G_raw=1.01 G_app=1.01 scale=1.0000 floor=0
+  step=    1 loss=5.4261 acc=0.0000 G_raw=1.00 G_app=1.00 scale=1.0000 floor=0
+
+============================================================
+Run complete: harm_s0
+  final_loss=5.4261, final_acc=0.0000
+  max_gain_raw=1.01, max_gain_applied=1.01
+  harm_scale_mean=1.0000, harm_scale_min=1.0000
+  floor_hits=0, time=0.5s
+============================================================
+
+
+Logs saved to: runs/smoke_remote_worker_after_llama_stop
