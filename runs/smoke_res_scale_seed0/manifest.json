@@ -1,0 +1,36 @@
+{
+  "run_name": "res_scale_s0",
+  "mode": "res_scale",
+  "seed": 0,
+  "steps": 4,
+  "created_utc": "2026-05-07T18:53:34.257322+00:00",
+  "command": "/gfs/git/harmonized-hyper-connections/.venv/bin/python3 harmonizer_applied_gain.py --mode res_scale --steps 4 --seed 0 --out-dir runs/smoke_res_scale_seed0 --device cpu --log-every 1 --d 8 --layers 2 --n 3 --batch 2 --seq 16 --vocab 32 --num-kv-pairs 2 --residual-scale 0.25",
+  "hostname": "dgx",
+  "python": "3.14.3",
+  "torch": "2.11.0+cu130",
+  "cuda_available": true,
+  "device": "cpu",
+  "commit_sha": "db9c517a62c4b07a0556514f8d343d5d797442a6",
+  "files": [
+    {
+      "path": "runs/smoke_res_scale_seed0/config.json",
+      "bytes": 380,
+      "sha256": "9f7c6ff3c94a7a8280ef9c9f0188f040afb647487575b79b2a5735fd2cc6c45e"
+    },
+    {
+      "path": "runs/smoke_res_scale_seed0/command.txt",
+      "bytes": 275,
+      "sha256": "f3f2f535e1a1d93204ca1c4368caf9d2b9b19c68c40b522959f164de1b654abe"
+    },
+    {
+      "path": "runs/smoke_res_scale_seed0/metrics.csv",
+      "bytes": 1080,
+      "sha256": "66e12ffee145ae675fd4c8d2a5354edfb17feba049dea2a3d77533c0213db315"
+    },
+    {
+      "path": "runs/smoke_res_scale_seed0/summary.json",
+      "bytes": 892,
+      "sha256": "a3778080cf10c453b371b5e4b812fd11bcb4e26c7907ded81f1b070f69c62063"
+    }
+  ]
+}

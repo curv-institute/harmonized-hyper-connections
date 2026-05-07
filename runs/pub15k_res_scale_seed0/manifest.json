@@ -1,0 +1,46 @@
+{
+  "run_name": "res_scale_s0",
+  "mode": "res_scale",
+  "seed": 0,
+  "steps": 15000,
+  "created_utc": "2026-05-07T21:06:53.192913+00:00",
+  "command": "ssh gx10-e313 'cd /gfs/git/harmonized-hyper-connections && CUDA_VISIBLE_DEVICES=0 UV_PROJECT_ENVIRONMENT=/home/jwm/.cache/harmonized-hyper-connections/.venv-gx10-e313 /home/jwm/.local/bin/uv run python harmonizer_applied_gain.py --mode res_scale --steps 15000 --seed 0 --out-dir runs/pub15k_res_scale_seed0 --device auto --log-every 500 --gain_target 12.0 --min_scale 0.02 --harm_k 0.5 --beta 0.95 --residual-scale 0.25'",
+  "hostname": "gx10-e313",
+  "python": "3.14.3",
+  "torch": "2.11.0+cu130",
+  "cuda_available": true,
+  "device": "cuda:0 NVIDIA GB10",
+  "commit_sha": "db9c517a62c4b07a0556514f8d343d5d797442a6",
+  "files": [
+    {
+      "path": "runs/pub15k_res_scale_seed0/config.json",
+      "bytes": 394,
+      "sha256": "62b21adf4135e3c8bcd08890b1a4a67664674c0235420249cfc59c460fdc7c3a"
+    },
+    {
+      "path": "runs/pub15k_res_scale_seed0/command.txt",
+      "bytes": 421,
+      "sha256": "17176c3a1ab316a8cf0e4f5a0d054eb9977eef54b2f4e1d1705ffc168687781c"
+    },
+    {
+      "path": "runs/pub15k_res_scale_seed0/metrics.csv",
+      "bytes": 6992,
+      "sha256": "40d033eff41e84f817aa0d7b6d525b384b835eb7b44079f797d14dc2d18d4bd2"
+    },
+    {
+      "path": "runs/pub15k_res_scale_seed0/summary.json",
+      "bytes": 904,
+      "sha256": "2eb7f0fc3b3c82051109e7baba372bc418875cc44702bf02e521f0461a0bb365"
+    },
+    {
+      "path": "runs/pub15k_res_scale_seed0/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/pub15k_res_scale_seed0/stderr.log",
+      "bytes": 59,
+      "sha256": "474fec06120c3ae21728b479cb8f0250ed46da3cccd431c81317123ad11f23b2"
+    }
+  ]
+}

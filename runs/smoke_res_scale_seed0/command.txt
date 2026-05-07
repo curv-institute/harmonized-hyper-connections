@@ -1,0 +1,1 @@
+/gfs/git/harmonized-hyper-connections/.venv/bin/python3 harmonizer_applied_gain.py --mode res_scale --steps 4 --seed 0 --out-dir runs/smoke_res_scale_seed0 --device cpu --log-every 1 --d 8 --layers 2 --n 3 --batch 2 --seq 16 --vocab 32 --num-kv-pairs 2 --residual-scale 0.25

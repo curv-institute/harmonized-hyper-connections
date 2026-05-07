@@ -66,7 +66,7 @@ def load_rows(runs_dir: Path, prefix: str, modes: list[str], allow_failed: bool)
 
 def write_csv(rows: list[dict[str, object]], path: Path) -> None:
     with open(path, "w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=SEED_COLUMNS, extrasaction="ignore")
+        writer = csv.DictWriter(f, fieldnames=SEED_COLUMNS, extrasaction="ignore", lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 
@@ -79,7 +79,7 @@ def write_aggregate_csv(rows: list[dict[str, object]], path: Path, modes: list[s
             fieldnames.append(f"{metric}_{suffix}")
 
     with open(path, "w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
+        writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore", lineterminator="\n")
         writer.writeheader()
         writer.writerows(aggs)
 

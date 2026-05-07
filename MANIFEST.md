@@ -1,18 +1,24 @@
 # Evidence Manifest
 
 This manifest maps the current repository claims to exact artifacts for the
-matched 15k-step Hyper-Connection comparison pack.
+matched 15k-step Hyper-Connection comparison pack and fixed residual-scaling
+baseline.
 
 Generated and validated on 2026-05-07 UTC.
 
 ## Scope
 
 The publication comparison pack covers synthetic key-value retrieval only. It
-uses matched task, model, optimizer, logging schema, and seeds across:
+uses matched task, model, optimizer, logging schema, and seeds across the
+central comparison modes:
 
 - `hc`
 - `mhc`
 - `harm`
+
+It also includes a fixed residual-scaling stabilization baseline:
+
+- `res_scale` with `residual_scale = 0.25`
 
 Seeds: `0`, `1`, `2`  
 Steps per run: `15000`
@@ -34,6 +40,13 @@ composite gain grew sharply:
 - `runs/pub15k_harm_seed1`: max raw gain `12985592.0`, max applied gain `12.6605`, floor hits `0`.
 - `runs/pub15k_harm_seed2`: max raw gain `123775856.0`, max applied gain `12.3913`, floor hits `0`.
 
+The fixed residual-scaling baseline attenuated transport but did not provide
+target-bounded control in all matched seeds:
+
+- `runs/pub15k_res_scale_seed0`: max raw gain `292508.9375`, max applied gain `27.1986`, floor hits `0`.
+- `runs/pub15k_res_scale_seed1`: max raw gain `3614366.5`, max applied gain `43.2408`, floor hits `0`.
+- `runs/pub15k_res_scale_seed2`: max raw gain `6019.4346`, max applied gain `9.3065`, floor hits `0`.
+
 Primary artifacts:
 
 - `results_summary.csv`
@@ -48,9 +61,14 @@ Primary artifacts:
 - `runs/pub15k_harm_seed0/metrics.csv`
 - `runs/pub15k_harm_seed1/metrics.csv`
 - `runs/pub15k_harm_seed2/metrics.csv`
+- `runs/pub15k_res_scale_seed0/summary.json`
+- `runs/pub15k_res_scale_seed1/summary.json`
+- `runs/pub15k_res_scale_seed2/summary.json`
 
 Interpretation boundary: this supports bounded applied transport under the
-measured synthetic setup. It does not establish LLM-scale behavior.
+measured synthetic setup. It also shows that fixed scalar attenuation is not the
+same mechanism as feedback on applied transport geometry. It does not establish
+LLM-scale behavior.
 
 ### Claim B: Routing Preservation
 
@@ -88,10 +106,12 @@ Seed-level final accuracy:
 | `hc` | 0.078125 | 0.125 | 0.125 | 0.109375 |
 | `mhc` | 0.109375 | 0.0625 | 0.046875 | 0.0729167 |
 | `harm` | 0.046875 | 0.125 | 0.046875 | 0.0729167 |
+| `res_scale` | 0.0625 | 0.046875 | 0.015625 | 0.0416667 |
 
 `harm` recovered `hc`-level final accuracy on seed 1, but not on seeds 0 or 2.
 The mean final accuracy matches `mhc` and trails `hc` in the current matched
-pack. Any public statement should reflect this mixed evidence.
+pack. `res_scale` trails the central comparison modes on mean final accuracy.
+Any public statement should reflect this mixed evidence.
 
 Primary artifacts:
 
@@ -117,12 +137,20 @@ Each run directory contains `config.json`, `command.txt`, `summary.json`,
 | `harm` | 0 | completed | 0.046875 | 653.6419 | 12.4039 | 0.3300 | 0 | `71be6567d492762cd995ca8927cb27e637cf6645` | `runs/pub15k_harm_seed0` |
 | `harm` | 1 | completed | 0.125 | 12985592.0 | 12.6605 | 0.1055 | 0 | `71be6567d492762cd995ca8927cb27e637cf6645` | `runs/pub15k_harm_seed1` |
 | `harm` | 2 | completed | 0.046875 | 123775856.0 | 12.3913 | 0.1071 | 0 | `71be6567d492762cd995ca8927cb27e637cf6645` | `runs/pub15k_harm_seed2` |
+| `res_scale` | 0 | completed | 0.0625 | 292508.9375 | 27.1986 | 1.0 | 0 | `db9c517a62c4b07a0556514f8d343d5d797442a6` | `runs/pub15k_res_scale_seed0` |
+| `res_scale` | 1 | completed | 0.046875 | 3614366.5 | 43.2408 | 1.0 | 0 | `db9c517a62c4b07a0556514f8d343d5d797442a6` | `runs/pub15k_res_scale_seed1` |
+| `res_scale` | 2 | completed | 0.015625 | 6019.4346 | 9.3065 | 1.0 | 0 | `db9c517a62c4b07a0556514f8d343d5d797442a6` | `runs/pub15k_res_scale_seed2` |
 
 Commit note: `runs/pub15k_hc_seed0` was generated under earlier commit
 `f6bdf6155b2b683c4193c698db2f70f7db849918` with the same matched run config and
 logging schema before tooling commit `71be6567d492762cd995ca8927cb27e637cf6645`.
 It is preserved as generated rather than edited. Rerun `hc` seed 0 if a strict
 single-commit evidence pack is required.
+
+Aborted-run note: `runs/aborted_pub15k_res_scale_seed0_scheduler_restart_20260507/`
+preserves a partial scheduler launch for `res_scale` seed 0. It was stopped
+after the first logged row because the skipped existing modes left the local GPU
+idle; the publication baseline seed 0 run is `runs/pub15k_res_scale_seed0/`.
 
 ## Derived Outputs
 
@@ -140,8 +168,8 @@ Generated outputs:
 Generation commands:
 
 ```bash
-uv run python scripts/summarize_results.py
-uv run python make_figures.py
+uv run python scripts/summarize_results.py --modes hc mhc harm res_scale
+uv run python make_figures.py --modes hc mhc harm res_scale
 ```
 
 ## Validation
@@ -149,7 +177,7 @@ uv run python make_figures.py
 Run artifact validation:
 
 ```bash
-uv run python scripts/validate_artifacts.py --prefix pub15k --steps 15000
+uv run python scripts/validate_artifacts.py --prefix pub15k --steps 15000 --modes hc mhc harm res_scale
 ```
 
 Result on 2026-05-07 UTC: passed.
@@ -157,7 +185,7 @@ Result on 2026-05-07 UTC: passed.
 Run and derived artifact validation:
 
 ```bash
-uv run python scripts/validate_artifacts.py --prefix pub15k --steps 15000 --check-derived
+uv run python scripts/validate_artifacts.py --prefix pub15k --steps 15000 --modes hc mhc harm res_scale --check-derived
 ```
 
 Result on 2026-05-07 UTC: passed.
@@ -168,7 +196,8 @@ Test command:
 uv run pytest
 ```
 
-Latest result on 2026-05-07 UTC after this manifest update: `7 passed`.
+Latest result on 2026-05-07 UTC after the residual-scaling baseline update:
+`8 passed`.
 
 ## Environment Evidence
 

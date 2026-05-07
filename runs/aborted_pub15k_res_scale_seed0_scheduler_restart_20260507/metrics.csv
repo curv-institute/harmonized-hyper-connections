@@ -1,0 +1,2 @@
+step,loss,accuracy,raw_gain,applied_gain,scale,mode,seed,acc,gain_raw_row,gain_raw_col,gain_raw_max,gain_applied_row,gain_applied_col,gain_applied_max,harm_scale,floor_hits,wall_time_sec
+0,5.782959938049316,0.0,1.509186029434204,1.1251732110977173,1.0,res_scale,0,0.0,1.509186029434204,1.3920432329177856,1.509186029434204,1.1251732110977173,1.0981857776641846,1.1251732110977173,1.0,0,1.13208365207538

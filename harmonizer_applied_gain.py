@@ -498,7 +498,7 @@ def train(cfg: RunConfig, out_dir: Path) -> Dict:
     harm_scale_values = []
 
     with open(metrics_file, "w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer = csv.DictWriter(f, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
 
         for step in range(cfg.steps):

@@ -81,7 +81,7 @@ Add at least one stronger stabilization baseline so the comparison is not only H
 
 Candidate baselines:
 
-- [ ] Residual scaling.
+- [x] Residual scaling.
 - [ ] LayerScale-style learned residual gain.
 - [ ] Spectral normalization.
 - [ ] Norm clipping.
@@ -156,4 +156,4 @@ Acceptance:
 
 ## Current working interpretation
 
-The repo currently supports the gain-control claim most strongly: Harmonizer can bound applied residual transport while raw transport parameters drift. The performance-recovery and routing-preservation claims need matched multi-seed comparison artifacts before they should be used as central public claims.
+The repo currently supports the gain-control claim most strongly: Harmonizer can bound applied residual transport while raw transport parameters drift. The fixed residual-scaling baseline attenuates gain but does not target-bound applied gain across all matched seeds. Performance recovery remains mixed, and routing preservation still needs a direct routing-capacity measurement before it should be used as a central public claim.
